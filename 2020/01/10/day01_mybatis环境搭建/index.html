@@ -21,13 +21,15 @@
     
     
     <meta name="keywords" content="">
-    <meta property="og:type" content="article">
+    <meta name="description" content="#mybatis环境搭建##mybatis环境搭建步骤  创建maven工程并导入坐标 创建实体类和dao接口 创建mybatis的主配置文件SqlMapConfig.xml 创建映射配置文件IUserDao.xml   ##mybatis环境搭建注意事项  创建IUserDao.xml 和 IUserDao.java时名称是为了和我们之前的知识保持一致。在mybatis中它把持久层的操作接口名称">
+<meta property="og:type" content="article">
 <meta property="og:title" content="day01_mybatis环境搭建">
 <meta property="og:url" content="http://yoursite.com/2020/01/10/day01_mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="#mybatis环境搭建##mybatis环境搭建步骤  创建maven工程并导入坐标 创建实体类和dao接口 创建mybatis的主配置文件SqlMapConfig.xml 创建映射配置文件IUserDao.xml   ##mybatis环境搭建注意事项  创建IUserDao.xml 和 IUserDao.java时名称是为了和我们之前的知识保持一致。在mybatis中它把持久层的操作接口名称">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-09T16:12:52.739Z">
-<meta property="article:modified_time" content="2020-01-09T07:26:48.692Z">
+<meta property="article:modified_time" content="2020-01-09T16:20:39.825Z">
 <meta property="article:author" content="Lrq">
 <meta name="twitter:card" content="summary">
     
@@ -152,6 +154,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#mybatis环境搭建"><span class="post-toc-number">1.</span> <span class="post-toc-text">#mybatis环境搭建</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类"><span class="post-toc-number">2.</span> <span class="post-toc-text">当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类</span></a></li></ol>
+        </nav>
+    </aside>
+
 
 <article id="post-day01_mybatis环境搭建"
   class="post-article article-type-post fade" itemprop="blogPost">
@@ -172,7 +181,23 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <h2 id="mybatis环境搭建"><a href="#mybatis环境搭建" class="headerlink" title="#mybatis环境搭建"></a>#mybatis环境搭建</h2><p>##<font color="blue">mybatis环境搭建步骤</font></p>
+<ol>
+<li>创建maven工程并导入坐标</li>
+<li>创建实体类和dao接口</li>
+<li>创建mybatis的主配置文件<code>SqlMapConfig.xml</code></li>
+<li>创建映射配置文件<code>IUserDao.xml</code></li>
+</ol>
+<hr>
+<p>##<font color="blue">mybatis环境搭建注意事项</font></p>
+<ol>
+<li>创建<code>IUserDao.xml</code> 和 <code>IUserDao.java</code>时名称是为了和我们之前的知识保持一致。在mybatis中它把持久层的操作接口名称和映射文件叫做<code>Mapper</code>。因此 <code>IUserDao</code> 和 <code>IUserMapper</code>是一样的</li>
+<li>在<code>IntelliJ Idea</code>中创建目录的时候，它和包是不一样的。包在创建时，<code>com.lrq.dao</code>是<strong>三级结构</strong>，但目录在创建时，是<strong>一级结构</strong></li>
+<li><strong>mybatis的映射配置文件位置必须和<code>dao</code>接口的包结构相同</strong>（因此我们需要分三级创建目录，保证<code>IUserMapper(Dao).xml</code>文件所在结构和<code>Dao.java</code>所在结构相同）</li>
+<li>映射文件的mapper标签的<code>namspace</code>属性的取值必须是<code>dao</code>接口的<strong>全限定类名</strong></li>
+<li>映射配置文件的操作配置（select或其他)，id的属性取值必须是dao接口的<strong>方法名</strong></li>
+</ol>
+<h2 id="当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类"><a href="#当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类" class="headerlink" title="当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类"></a><font size="5"><strong><code>当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类</code></strong></font></h2>
         </div>
 
         <blockquote class="post-copyright">
@@ -180,12 +205,10 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-09T07:26:48.692Z" itemprop="dateUpdated">2020-01-09 15:26:48</time>
+    Last updated: <time datetime="2020-01-09T16:20:39.825Z" itemprop="dateUpdated">2020-01-10 00:20:39</time>
 </span><br>
 
 
-        
-        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2020/01/10/day01_mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" target="_blank" rel="external">http://yoursite.com/2020/01/10/day01_mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</a>
         
     </div>
     
@@ -198,10 +221,6 @@
 </blockquote>
 
         
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
-</div>
-
 
 
         <div class="post-footer">
@@ -297,32 +316,6 @@
 
 </article>
 
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢大爷~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
 
 
 </div>
@@ -410,7 +403,7 @@
 
     <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
 
 </script>
