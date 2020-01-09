@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-09T16:20:39.825Z</updated>
+  <updated>2020-01-09T16:33:54.897Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,15 +21,16 @@
     <link href="http://yoursite.com/2020/01/10/day01_mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>http://yoursite.com/2020/01/10/day01_mybatis%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2020-01-09T16:12:52.739Z</published>
-    <updated>2020-01-09T16:20:39.825Z</updated>
+    <updated>2020-01-09T16:33:54.897Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="mybatis环境搭建"><a href="#mybatis环境搭建" class="headerlink" title="#mybatis环境搭建"></a>#mybatis环境搭建</h2><p>##<font color="blue">mybatis环境搭建步骤</font></p><ol><li>创建maven工程并导入坐标</li><li>创建实体类和dao接口</li><li>创建mybatis的主配置文件<code>SqlMapConfig.xml</code></li><li>创建映射配置文件<code>IUserDao.xml</code></li></ol><hr><p>##<font color="blue">mybatis环境搭建注意事项</font></p><ol><li>创建<code>IUserDao.xml</code> 和 <code>IUserDao.java</code>时名称是为了和我们之前的知识保持一致。在mybatis中它把持久层的操作接口名称和映射文件叫做<code>Mapper</code>。因此 <code>IUserDao</code> 和 <code>IUserMapper</code>是一样的</li><li>在<code>IntelliJ Idea</code>中创建目录的时候，它和包是不一样的。包在创建时，<code>com.lrq.dao</code>是<strong>三级结构</strong>，但目录在创建时，是<strong>一级结构</strong></li><li><strong>mybatis的映射配置文件位置必须和<code>dao</code>接口的包结构相同</strong>（因此我们需要分三级创建目录，保证<code>IUserMapper(Dao).xml</code>文件所在结构和<code>Dao.java</code>所在结构相同）</li><li>映射文件的mapper标签的<code>namspace</code>属性的取值必须是<code>dao</code>接口的<strong>全限定类名</strong></li><li>映射配置文件的操作配置（select或其他)，id的属性取值必须是dao接口的<strong>方法名</strong></li></ol><h2 id="当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类"><a href="#当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类" class="headerlink" title="当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类"></a><font size="5"><strong><code>当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类</code></strong></font></h2>]]></content>
+    <content type="html"><![CDATA[<h1 id="mybatis环境搭建"><a href="#mybatis环境搭建" class="headerlink" title="mybatis环境搭建"></a>mybatis环境搭建</h1><hr><h3 id="mybatis环境搭建步骤"><a href="#mybatis环境搭建步骤" class="headerlink" title="mybatis环境搭建步骤"></a><font color="blue">mybatis环境搭建步骤</font></h3><ol><li>创建maven工程并导入坐标</li><li>创建实体类和dao接口</li><li>创建mybatis的主配置文件<code>SqlMapConfig.xml</code></li><li>创建映射配置文件<code>IUserDao.xml</code></li></ol><hr><h3 id="mybatis环境搭建注意事项"><a href="#mybatis环境搭建注意事项" class="headerlink" title="mybatis环境搭建注意事项"></a><font color="blue">mybatis环境搭建注意事项</font></h3><ol><li>创建<code>IUserDao.xml</code> 和 <code>IUserDao.java</code>时名称是为了和我们之前的知识保持一致。在mybatis中它把持久层的操作接口名称和映射文件叫做<code>Mapper</code>。因此 <code>IUserDao</code> 和 <code>IUserMapper</code>是一样的</li><li>在<code>IntelliJ Idea</code>中创建目录的时候，它和包是不一样的。包在创建时，<code>com.lrq.dao</code>是<strong>三级结构</strong>，但目录在创建时，是<strong>一级结构</strong></li><li><strong>mybatis的映射配置文件位置必须和<code>dao</code>接口的包结构相同</strong>（因此我们需要分三级创建目录，保证<code>IUserMapper(Dao).xml</code>文件所在结构和<code>Dao.java</code>所在结构相同）</li><li>映射文件的mapper标签的<code>namspace</code>属性的取值必须是<code>dao</code>接口的<strong>全限定类名</strong></li><li>映射配置文件的操作配置（select或其他)，id的属性取值必须是dao接口的<strong>方法名</strong></li></ol><h2 id="当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类"><a href="#当我们遵循了3-4-5点之后，在开发中就无须再去写dao的实现类" class="headerlink" title="当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类"></a><font size="3"><strong><code>当我们遵循了3,4,5点之后，在开发中就无须再去写dao的实现类</code></strong></font></h2>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;mybatis环境搭建&quot;&gt;&lt;a href=&quot;#mybatis环境搭建&quot; class=&quot;headerlink&quot; title=&quot;#mybatis环境搭建&quot;&gt;&lt;/a&gt;#mybatis环境搭建&lt;/h2&gt;&lt;p&gt;##&lt;font color=&quot;blue&quot;&gt;mybatis环境搭建
+        &lt;h1 id=&quot;mybatis环境搭建&quot;&gt;&lt;a href=&quot;#mybatis环境搭建&quot; class=&quot;headerlink&quot; title=&quot;mybatis环境搭建&quot;&gt;&lt;/a&gt;mybatis环境搭建&lt;/h1&gt;&lt;hr&gt;
+&lt;h3 id=&quot;mybatis环境搭建步骤&quot;&gt;&lt;a href=&quot;
       
     
     </summary>
