@@ -21,15 +21,15 @@
     
     
     <meta name="keywords" content="JVM">
-    <meta name="description" content="#Java虚拟机——自动内存管理##第二章 Java内存区域与内存溢出异常  ###2.2 运行时数据区域####2.2.2 Java虚拟机栈（VM Stack）  Java虚拟机栈是线程私有的。 虚拟机栈的“栈”更多情况下指的是其局部变量表部分。 局部变量表中存放了编译期可知的Java虚拟机基本数据类型(int, long, double…)，它们以局部变量槽(Slot)来表示，其中64位长度的">
+    <meta name="description" content="Java虚拟机——自动内存管理第二章 Java内存区域与内存溢出异常 2.2 运行时数据区域2.2.2 Java虚拟机栈（VM Stack） Java虚拟机栈是线程私有的。 虚拟机栈的“栈”更多情况下指的是其局部变量表部分。 局部变量表中存放了编译期可知的Java虚拟机基本数据类型(int, long, double…)，它们以局部变量槽(Slot)来表示，其中64位长度的long和double类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java内存区域与内存溢出异常">
 <meta property="og:url" content="http://yoursite.com/2020/01/10/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
-<meta property="og:description" content="#Java虚拟机——自动内存管理##第二章 Java内存区域与内存溢出异常  ###2.2 运行时数据区域####2.2.2 Java虚拟机栈（VM Stack）  Java虚拟机栈是线程私有的。 虚拟机栈的“栈”更多情况下指的是其局部变量表部分。 局部变量表中存放了编译期可知的Java虚拟机基本数据类型(int, long, double…)，它们以局部变量槽(Slot)来表示，其中64位长度的">
+<meta property="og:description" content="Java虚拟机——自动内存管理第二章 Java内存区域与内存溢出异常 2.2 运行时数据区域2.2.2 Java虚拟机栈（VM Stack） Java虚拟机栈是线程私有的。 虚拟机栈的“栈”更多情况下指的是其局部变量表部分。 局部变量表中存放了编译期可知的Java虚拟机基本数据类型(int, long, double…)，它们以局部变量槽(Slot)来表示，其中64位长度的long和double类">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-10T15:44:14.194Z">
-<meta property="article:modified_time" content="2020-01-10T16:36:02.175Z">
+<meta property="article:modified_time" content="2020-01-10T16:36:53.397Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -157,6 +157,13 @@
 
 <div class="container body-wrap">
     
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java虚拟机——自动内存管理"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java虚拟机——自动内存管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二章-Java内存区域与内存溢出异常"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">第二章 Java内存区域与内存溢出异常</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2-运行时数据区域"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">2.2 运行时数据区域</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-2-Java虚拟机栈（VM-Stack）"><span class="post-toc-number">1.1.1.1.</span> <span class="post-toc-text">2.2.2 Java虚拟机栈（VM Stack）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-3-本地方法栈（Native-Method-Stacks）"><span class="post-toc-number">1.1.1.2.</span> <span class="post-toc-text">2.2.3 本地方法栈（Native Method Stacks）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-4-Java堆（Java-Heap）"><span class="post-toc-number">1.1.1.3.</span> <span class="post-toc-text">2.2.4 Java堆（Java Heap）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-5-方法区（Method-Area）（非堆）"><span class="post-toc-number">1.1.1.4.</span> <span class="post-toc-text">2.2.5 方法区（Method Area）（非堆）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-6-运行时常量池（Runtime-Constant-Pool）"><span class="post-toc-number">1.1.1.5.</span> <span class="post-toc-text">2.2.6 运行时常量池（Runtime Constant Pool）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-7-直接内存（Direct-Memory）"><span class="post-toc-number">1.1.1.6.</span> <span class="post-toc-text">2.2.7 直接内存（Direct Memory）</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
 
 <article id="post-JVM自动内存管理"
   class="post-article article-type-post fade" itemprop="blogPost">
@@ -179,10 +186,8 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>#Java虚拟机——自动内存管理<br>##第二章 Java内存区域与内存溢出异常</p>
-<hr>
-<p>###2.2 运行时数据区域<br>####2.2.2 Java虚拟机栈（VM Stack）</p>
-<ul>
+            <h1 id="Java虚拟机——自动内存管理"><a href="#Java虚拟机——自动内存管理" class="headerlink" title="Java虚拟机——自动内存管理"></a>Java虚拟机——自动内存管理</h1><h2 id="第二章-Java内存区域与内存溢出异常"><a href="#第二章-Java内存区域与内存溢出异常" class="headerlink" title="第二章 Java内存区域与内存溢出异常"></a>第二章 Java内存区域与内存溢出异常</h2><hr>
+<h3 id="2-2-运行时数据区域"><a href="#2-2-运行时数据区域" class="headerlink" title="2.2 运行时数据区域"></a>2.2 运行时数据区域</h3><h4 id="2-2-2-Java虚拟机栈（VM-Stack）"><a href="#2-2-2-Java虚拟机栈（VM-Stack）" class="headerlink" title="2.2.2 Java虚拟机栈（VM Stack）"></a>2.2.2 Java虚拟机栈（VM Stack）</h4><ul>
 <li>Java虚拟机栈是<strong>线程私有的</strong>。</li>
 <li>虚拟机栈的“栈”更多情况下指的是其<code>局部变量表</code>部分。</li>
 <li>局部变量表中存放了编译期可知的Java虚拟机基本数据类型(int, long, double…)，它们以局部变量槽(Slot)来表示，其中64位长度的long和double类型的数据会占用两个变量槽，其余的数据类型只占用一个</li>
@@ -192,21 +197,18 @@
 </li>
 </ul>
 <hr>
-<p>####2.2.3 本地方法栈（Native Method Stacks）</p>
-<ul>
+<h4 id="2-2-3-本地方法栈（Native-Method-Stacks）"><a href="#2-2-3-本地方法栈（Native-Method-Stacks）" class="headerlink" title="2.2.3 本地方法栈（Native Method Stacks）"></a>2.2.3 本地方法栈（Native Method Stacks）</h4><ul>
 <li>与VM Stack发挥的作用非常相似，VM Stack为虚拟机执行Java方法（字节码）服务，本地方法则是为本地方法（Native）服务</li>
 </ul>
 <hr>
-<p>####2.2.4 Java堆（Java Heap）</p>
-<ul>
+<h4 id="2-2-4-Java堆（Java-Heap）"><a href="#2-2-4-Java堆（Java-Heap）" class="headerlink" title="2.2.4 Java堆（Java Heap）"></a>2.2.4 Java堆（Java Heap）</h4><ul>
 <li>为所有Java线程共享的一片区域</li>
 <li>几乎所有对象实例都在堆中分配内存</li>
 <li>是垃圾收集器管理的内存区域，因此也被称为<code>GC堆(Garbage Collected Heap)</code></li>
 <li>Java堆既可以被实现成固定大小的，也可以是可扩展的。在当前主流Java虚拟机中都是按照可扩展来实现的（通过-Xmx和-Xms设定）。<strong>如果Java堆中没有内存完成实例分配，并且堆再也无法扩展时，Java虚拟机将会抛出OutOfMemoryError异常</strong></li>
 </ul>
 <hr>
-<p>####2.2.5 方法区（Method Area）（非堆）</p>
-<ul>
+<h4 id="2-2-5-方法区（Method-Area）（非堆）"><a href="#2-2-5-方法区（Method-Area）（非堆）" class="headerlink" title="2.2.5 方法区（Method Area）（非堆）"></a>2.2.5 方法区（Method Area）（非堆）</h4><ul>
 <li>为所有Java线程共享的内存区域</li>
 <li>用于存储已被虚拟机加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等数据，</li>
 <li>一般方法区不进行内存回收，若回收，主要是针对常量池的回收和堆类型的卸载，但结果往往比较难令人满意，尤其是堆类型的卸载，条件十分苛刻（但是还是有必要的）。</li>
@@ -216,16 +218,14 @@
 </li>
 </ul>
 <hr>
-<p>####2.2.6 运行时常量池（Runtime Constant Pool）</p>
-<ul>
+<h4 id="2-2-6-运行时常量池（Runtime-Constant-Pool）"><a href="#2-2-6-运行时常量池（Runtime-Constant-Pool）" class="headerlink" title="2.2.6 运行时常量池（Runtime Constant Pool）"></a>2.2.6 运行时常量池（Runtime Constant Pool）</h4><ul>
 <li>是方法区的一部分</li>
 <li>Class文件中除了有<strong>类的模板、字段、方法、接口等描述信息外</strong>，还有一项信息是<code>常量池表(Constant Pool Table)</code>，用于存放编译器生成的各种<strong>字面量</strong>和<strong>符号引用</strong>，这部分内容将在类加载之后存放到方法区的运行时常量池中。</li>
 <li>与Class文件常量池的区别：运行时常量池具备动态性，Java语言的常量不一定只有编译期才能产生，并非预置入Class文件中的常量池的内容才能进入运行时常量池，<strong>运行期间也可以将新的常量放入池中</strong>。</li>
 <li>既然RCP是方法区的一部分，因此常量池无法再申请到内存时，会抛出OutOfMemoryError异常</li>
 </ul>
 <hr>
-<p>####2.2.7 直接内存（Direct Memory）</p>
-<ul>
+<h4 id="2-2-7-直接内存（Direct-Memory）"><a href="#2-2-7-直接内存（Direct-Memory）" class="headerlink" title="2.2.7 直接内存（Direct Memory）"></a>2.2.7 直接内存（Direct Memory）</h4><ul>
 <li>并不是虚拟机运行时数据区的一部分，也不是《Java虚拟机规范》中定义的内存区域，但是这部分的内存频繁的使用，也可能导致OutOfMemoryError异常出现。</li>
 <li>JDK 1.4中新加入的NIO（New Input/Output）类，引入了一种基于通道（Channel）与缓冲区（Buffer）的I/O方式，它可以使用Native函数库直接分配堆外内存，然后通过一个存储在Java堆里面的DirectByteBuffer对象作为这块内存的引用进行操作。这样能在一些场景中显著提高性能，因为避免了在Java堆和Native堆中来回复制数据。</li>
 </ul>
@@ -237,7 +237,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-10T16:36:02.175Z" itemprop="dateUpdated">2020-01-11 00:36:02</time>
+    Last updated: <time datetime="2020-01-10T16:36:53.397Z" itemprop="dateUpdated">2020-01-11 00:36:53</time>
 </span><br>
 
 
@@ -253,10 +253,6 @@
 </blockquote>
 
         
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
-</div>
-
 
 
         <div class="post-footer">
@@ -354,32 +350,6 @@
 
 </article>
 
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        谢谢大爷~
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <div class="reward-content">
-        
-        <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
-        </div>
-        
-        <label class="reward-toggle">
-            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
-            <div class="reward-toggle-ctrol">
-                <span class="reward-toggle-item wechat">微信</span>
-                <span class="reward-toggle-label"></span>
-                <span class="reward-toggle-item alipay">支付宝</span>
-            </div>
-        </label>
-        
-    </div>
-</div>
-
 
 
 </div>
@@ -467,7 +437,7 @@
 
     <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
 
 </script>
