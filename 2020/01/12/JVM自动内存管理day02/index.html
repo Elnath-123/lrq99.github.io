@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Java内存区域与内存溢出异常day02 | Lrq&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JVM">
+    <meta name="description" content="Java虚拟机——自动内存管理第二章 Java内存区域与内存溢出异常 2.3 HotSpot 虚拟机对象探秘2.3.1 对象的创建在JVM中，一个对象（普通JAVA对象）被创建过程如下：  当Java虚拟机遇到一条字节码new指令时，首先检查此参数是否能在常量池中定位到一个类的符号引用 检查符号引用代表的类是否已经被加载、解析和初始化过，若没有则执行类加载过程。 给新生对象在Java堆中分配内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java内存区域与内存溢出异常day02">
+<meta property="og:url" content="http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/index.html">
+<meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="Java虚拟机——自动内存管理第二章 Java内存区域与内存溢出异常 2.3 HotSpot 虚拟机对象探秘2.3.1 对象的创建在JVM中，一个对象（普通JAVA对象）被创建过程如下：  当Java虚拟机遇到一条字节码new指令时，首先检查此参数是否能在常量池中定位到一个类的符号引用 检查符号引用代表的类是否已经被加载、解析和初始化过，若没有则执行类加载过程。 给新生对象在Java堆中分配内存">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-11T16:12:03.169Z">
+<meta property="article:modified_time" content="2020-01-11T16:49:58.027Z">
+<meta property="article:author" content="Lrq">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Lrq</h5>
+          <a href="mailto:lrq_bjut@163.com" title="lrq_bjut@163.com" class="mail">lrq_bjut@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/lrq99" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java内存区域与内存溢出异常day02</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java内存区域与内存溢出异常day02</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-11T16:12:03.169Z" itemprop="datePublished" class="page-time">
+  2020-01-12
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/java%E5%AD%A6%E4%B9%A0/">java学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java虚拟机——自动内存管理"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java虚拟机——自动内存管理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二章-Java内存区域与内存溢出异常"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">第二章 Java内存区域与内存溢出异常</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-3-HotSpot-虚拟机对象探秘"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">2.3 HotSpot 虚拟机对象探秘</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-3-1-对象的创建"><span class="post-toc-number">1.1.1.1.</span> <span class="post-toc-text">2.3.1 对象的创建</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-3-2-对象的内存布局"><span class="post-toc-number">1.1.1.2.</span> <span class="post-toc-text">2.3.2 对象的内存布局</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-3-3对象的访问定位"><span class="post-toc-number">1.1.1.3.</span> <span class="post-toc-text">2.3.3对象的访问定位</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JVM自动内存管理day02"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java内存区域与内存溢出异常day02</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-12 00:12:03" datetime="2020-01-11T16:12:03.169Z"  itemprop="datePublished">2020-01-12</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/java%E5%AD%A6%E4%B9%A0/">java学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Java虚拟机——自动内存管理"><a href="#Java虚拟机——自动内存管理" class="headerlink" title="Java虚拟机——自动内存管理"></a>Java虚拟机——自动内存管理</h1><h2 id="第二章-Java内存区域与内存溢出异常"><a href="#第二章-Java内存区域与内存溢出异常" class="headerlink" title="第二章 Java内存区域与内存溢出异常"></a>第二章 Java内存区域与内存溢出异常</h2><hr>
+<h3 id="2-3-HotSpot-虚拟机对象探秘"><a href="#2-3-HotSpot-虚拟机对象探秘" class="headerlink" title="2.3 HotSpot 虚拟机对象探秘"></a>2.3 HotSpot 虚拟机对象探秘</h3><h4 id="2-3-1-对象的创建"><a href="#2-3-1-对象的创建" class="headerlink" title="2.3.1 对象的创建"></a>2.3.1 对象的创建</h4><p><strong><font size=4 color='red'>在JVM中，一个对象（普通JAVA对象）被创建过程如下：</font></strong></p>
+<ol>
+<li>当Java虚拟机遇到一条字节码new指令时，首先检查此参数是否能在<code>常量池</code>中定位到一个类的符号引用</li>
+<li>检查符号引用代表的类是否已经被加载、解析和初始化过，若没有则执行类加载过程。</li>
+<li>给新生对象在Java堆中分配内存</li>
+<li>并发时采用CAS与失败重试来保证分配内存时的线程安全。</li>
+<li>对将生成的对象进行必要的设置（哪个类的实例，如何找到类的Meta Data，对象的HashCode等）</li>
+</ol>
+<p>&emsp;&emsp;Java堆如果是<code>绝对规整</code>的，即通过一个指针将空闲内存和可用内存分开，那么则通过<code>指针碰撞(Bump The Pointer)</code>来分配内存。如果Java堆是不规整的，即空闲内存和可用内存交错在一起，那么则采用<code>空闲列表(Free List)</code>来分配内存。<br><strong>[注]选择哪种方式是由Java堆是否规整来决定的，而Java堆是否规整又由GC是否带有<code>空间压缩整理(Compact)</code>的能力决定。因此，当使用Serial, ParNew等带压缩整理的收集器，则采用指针碰撞；当使用CMS这种基于<code>清除(Sweep)</code>算法的收集器时，理论上就只能采用复杂的空闲列表来分配内存。</strong></p>
+<p>&emsp;&emsp;并发时，可能出现正在给对象A分配内存，指针还没来得及修改，对象B又同时使用了原来的指针来分配内存的情况，因此<br><strong><font size=4 color='red'>在并发情况下，有两种方案可以保证线程安全：</font></strong></p>
+<ol>
+<li>需要使用<code>CAS(Compare and Swap)</code>配上<code>失败重试</code>的方式来保证更新操作的原子性</li>
+<li>把内存分配的动作按照线程划分在不同的空间之中进行，即每个线程在Java堆中预先分配一小块内存即<code>TLAB(Thread Local Allocation Buffer)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区分配，只用本地缓冲区用完了，分配新的缓冲区时才需要同步锁定。</li>
+</ol>
+<p>在虚拟机的视角中，对象已经建立完成，而在Java程序的视角来看，对象创建才刚刚开始——构造函数，Class文件中的&lt;init&gt;()方法还没有执行，所有的字段都为默认的零值，对象需要的其他资源和状态信息也还没有按照预定的意图构造好。一般来说new指令之后就会接着执行&lt;init&gt;()方法，按程序员的意愿对对象进行初始化。</p>
+<hr>
+<h4 id="2-3-2-对象的内存布局"><a href="#2-3-2-对象的内存布局" class="headerlink" title="2.3.2 对象的内存布局"></a>2.3.2 对象的内存布局</h4><p><strong><font size=4 color='red'>在HotSpot虚拟机中，对象在堆内存中的存储布局可以划分为三个部分：</font></strong></p>
+<ol>
+<li>对象头(Header)</li>
+<li>实例数据(Instance Data)</li>
+<li>对齐填充(Padding)</li>
+</ol>
+<p>首先，对于对象头包含了两部分信息。</p>
+<ol>
+<li>用于存储对象自身的运行时数据<br>如HashCode、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳等。这部分在32位和64位虚拟机中分别为32bit和64bit，称为<code>Mark Word</code></li>
+<li>类型指针<br>类型指针即对象指向它类型元数据的指针，Java虚拟机通过这个指针来确定该对象是哪个类的实例（并不一定所有虚拟机实现都保留此指针）。</li>
+<li>长度数据（Java数组）<br>若对象是一个Java数组，则在对象头中还必须有一块记录数组长度的数据。</li>
+</ol>
+<p>实例数据是对象真正存储的有效信息，即我们在程序代码里面所定义的各种类型字段内容，无论是从父类继承下来的，还是在子类中定义的。</p>
+<p>对其填充并不是必然存在的，也没有特别的含义，仅仅起占位符的作用。HotSpot虚拟机的自动内存管理系统要求对象起始地址必须是8字节的整数倍，也就是任何对象的大小都必须是8字节的整数倍。（对象头已经被精心设计成正好是8字节的倍数）</p>
+<hr>
+<h4 id="2-3-3对象的访问定位"><a href="#2-3-3对象的访问定位" class="headerlink" title="2.3.3对象的访问定位"></a>2.3.3对象的访问定位</h4><p>创建对象自然是为了后续使用该对象。</p>
+<blockquote>
+<p>Java虚拟机规范称，Java程序会通过栈上的reference数据来操作堆上的具体对象。</p>
+</blockquote>
+<p>由于知识定义了reference是一个指向对象的引用，并没有定义这个引用还应该通过什么方式区定位、访问堆中的具体位置，因此实现由虚拟机而定。<br><strong><font size=4 color='red'>主流的实现方式有以下两种：</font></strong><br>1.句柄访问<br>Java堆中划分出一块内存来作为句柄池，reference中存储的就是对象的句柄地址，而句柄中包含了对象实例与类型数据各自具体的地址信息<br><strong>优势：reference中存储的是稳定句柄地址，在对象被移动时指挥改变句柄中的实例数据指针，refenence本身不需要更改</strong><br>2.直接指针访问<br>Java堆中对象的内存布局就必须考虑如何放置访问类型数据的相关信息，reference中存储的直接就是对象地址，如果知识访问对象本身的话，就不需要多一次间接访问的开销。<br><strong>优势：速度更快，节省了一次指针定位的时间开销</strong><br><strong>[注]在HotSpot虚拟机中，主要使用<code>直接指针访问</code>的方式进行对象访问（有例外情况，如果使用了Shenandoah收集器可能会有一次额外的转发），但从整个软件开发的范围来看，在各种语言、框架中使用句柄来访问的情况十分常见</strong></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-01-11T16:49:58.027Z" itemprop="dateUpdated">2020-01-12 00:49:58</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="Lrq">
+            Lrq
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&title=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&title=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/10/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java内存区域与内存溢出异常day01</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Lrq &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&title=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&title=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java内存区域与内存溢出异常day02》 — Lrq's blogs&url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/12/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86day02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKUlEQVR42u3aMY7jQAwEQP//0zrg0jvJTVIGLLomcqCVp2YDmux5veJ1/F3JM/+u6pNnn6/f8/rEwsbGxn4I+7hcZ8+cHUr1b6951aNJLNjY2Nhb2ddb6W03P5oEkxSwwj6xsbGxf5JdbS2SlRehamHDxsbGxs4bjPz5SeG5xmNjY2Nj5wVm0njkg6HecXxkloaNjY399exq0PvNnz+Yb2NjY2N/JXsyBkoKWO9qTi88KOwfGxsbexE7bxvm46frYVAyKkqigsKwCRsbG3spez4SSsLaKqN36G9aFGxsbOxF7OTVn5tgfWKc1BwzYWNjYz+Qnf+IzwPgu1qRpHw2I2RsbGzs1ezqgD5pGCajqEm4+yYYwMbGxl7BvitwnQe6+RCqOhRr9kDY2NjYj2InP+4nhacXCVcHRtVrRtjY2Ng72PMBUD76mQS01QL2RoeNjY29jp1f3MlLXe+izzy1jsoYNjY29iJ2fk0n72lyWK/tmdy9wcbGxt7KLvyILwau+UWfyfM3hATY2NjYi9jVa47zSzlJcZqHx28OAhsbG/ux7HwQX20/5lW0Gh7kGS42Njb2Jna1CWl2Nq0oYn4NtDBUwsbGxn44uxfK9oLhe2Pg5A3Y2NjYu9nJBZf5Fidvy6di+XdhY2Nj72P3moockI+uJqP/Ah4bGxt7KTuJWudBQs6e/0uwsbGxf4FdDUd7I/tJbFBtdZJvwcbGxt7HTtqMXqk7gpUXxV7ZK985xcbGxn4Uu3o212VgMsrvBbrJEUTxADY2NvY69jxevasoTg709BuxsbGxF7En4W512DR5/rqIJuWtFzZgY2Njfz8732JeBvIWohpCVC8DneKxsbGxF7EnK7+ykx9rNWaeFF1sbGzsHeyjuKqNRB7uVkdUvTYJGxsbex+7Wq6q7Up+HL1BUv4ZGxsbezc7L1q9bqY6ZqqS8j0XGhJsbGzsB7J7282HTdXh1OSd0V9hY2Nj/zy7OmC69yirbc9/3o+NjY39k+ze+Cl5f95U9A7xNBvBxsbGXsTOh0qTaOForXz8lL8NGxsbexN7Upbu2vS88bg30sDGxsZ+CPsPfjKglAqIPy0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Lrq's Blog';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Lrq's Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
