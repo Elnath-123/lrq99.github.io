@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://img-blog.csdn.net/20160810080241992?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="https://img-blog.csdn.net/20160807170246461?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="article:published_time" content="2020-01-16T03:44:02.283Z">
-<meta property="article:modified_time" content="2020-01-16T07:46:10.735Z">
+<meta property="article:modified_time" content="2020-01-16T07:48:44.286Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="JVM">
 <meta property="article:tag" content="设计模式">
@@ -233,6 +233,9 @@
 <p>Proxy.newProxyInstance(loader, interface, <font color='red'>handler</font>);</p>
 </blockquote>
 <p>调用这个方法后，委托类引用会指向代理对象，当其调用真实的方法时，会自动跳转至代理对象关联的<font color='red'>handler</font>中的invoke方法中，进行调用。也就是说，当调用customerDao.add()方法时，会自动去调用实现InvocationHandler接口的类中的invoke方法（在上面是通过匿名内部类实现的）</p>
+<blockquote>
+<p>参考文章：<a href="https://blog.csdn.net/jiankunking/article/details/52143504" target="_blank" rel="noopener">https://blog.csdn.net/jiankunking/article/details/52143504</a></p>
+</blockquote>
 
         </div>
 
@@ -241,7 +244,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-16T07:46:10.735Z" itemprop="dateUpdated">2020-01-16 15:46:10</time>
+    Last updated: <time datetime="2020-01-16T07:48:44.286Z" itemprop="dateUpdated">2020-01-16 15:48:44</time>
 </span><br>
 
 
