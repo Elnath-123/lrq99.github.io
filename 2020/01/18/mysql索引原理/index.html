@@ -21,19 +21,19 @@
     
     
     <meta name="keywords" content="MySQL索引原理">
-    <meta name="description" content="#MySQL索引及底层实现 一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列">
+    <meta name="description" content="MySQL索引及底层实现一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列没有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL索引及底层实现">
 <meta property="og:url" content="http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
-<meta property="og:description" content="#MySQL索引及底层实现 一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列">
+<meta property="og:description" content="MySQL索引及底层实现一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列没有">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.storagereview.com/images/ramdiskarticle1.jpg">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190614160951754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2019061416104528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1752328/332nzio50h.png?imageView2/2/w/1620">
 <meta property="article:published_time" content="2020-01-18T14:33:23.906Z">
-<meta property="article:modified_time" content="2020-01-18T16:23:00.671Z">
+<meta property="article:modified_time" content="2020-01-18T16:24:09.968Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="MySQL索引原理">
 <meta name="twitter:card" content="summary">
@@ -165,7 +165,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、什么是索引"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、什么是索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、为什么要使用索引"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、为什么要使用索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、MySQL索引的数据结构"><span class="post-toc-number">3.</span> <span class="post-toc-text">三、MySQL索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、为什么要使用B-树作为索引的数据结构"><span class="post-toc-number">4.</span> <span class="post-toc-text">四、为什么要使用B+树作为索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、聚集索引和非聚集索引"><span class="post-toc-number">5.</span> <span class="post-toc-text">五、聚集索引和非聚集索引</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MySQL索引及底层实现"><span class="post-toc-number">1.</span> <span class="post-toc-text">MySQL索引及底层实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、什么是索引"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">一、什么是索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、为什么要使用索引"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">二、为什么要使用索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、MySQL索引的数据结构"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">三、MySQL索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、为什么要使用B-树作为索引的数据结构"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">四、为什么要使用B+树作为索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、聚集索引和非聚集索引"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">五、聚集索引和非聚集索引</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -191,8 +191,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>#MySQL索引及底层实现</p>
-<h2 id="一、什么是索引"><a href="#一、什么是索引" class="headerlink" title="一、什么是索引"></a>一、什么是索引</h2><blockquote>
+            <h1 id="MySQL索引及底层实现"><a href="#MySQL索引及底层实现" class="headerlink" title="MySQL索引及底层实现"></a>MySQL索引及底层实现</h1><h2 id="一、什么是索引"><a href="#一、什么是索引" class="headerlink" title="一、什么是索引"></a>一、什么是索引</h2><blockquote>
 <p>“A database index is a data structure that improves the speed of operations in a table”<br>–MySQL Tutorial</p>
 </blockquote>
 <p>将以上索引定义翻译成中文，即<br><font color='red' size=4> 索引是用来提高操作数据表速度的数据结构<br></font></p>
@@ -226,7 +225,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-18T16:23:00.671Z" itemprop="dateUpdated">2020-01-19 00:23:00</time>
+    Last updated: <time datetime="2020-01-18T16:24:09.968Z" itemprop="dateUpdated">2020-01-19 00:24:09</time>
 </span><br>
 
 
