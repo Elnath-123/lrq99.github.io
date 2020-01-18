@@ -20,7 +20,7 @@
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="JVM,设计模式,jdk动态代理">
+    <meta name="keywords" content="设计模式,jdk动态代理,Spring AOP实现原理">
     <meta name="description" content="JDK动态代理实现与原理一、代理模式&amp;emsp;&amp;emsp;代理模式(Proxy Pattern) 是程序设计中的一种设计模式，结构如下图。代理类为委托（实现）类提供代理，以控制对委托类对象的访问。代理类负责为委托类预处理消息，过滤并转发消息，以及进行消息被委托类执行后的后续处理。&amp;emsp;&amp;emsp;为了保持行为的一致，代理类和委托类通常实现同样的接口，通过代理类可以对委托类对象进行访问，也可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK动态代理实现与原理">
@@ -31,11 +31,11 @@
 <meta property="og:image" content="https://img-blog.csdn.net/20160810080241992?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="https://img-blog.csdn.net/20160807170246461?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="article:published_time" content="2020-01-16T03:44:02.283Z">
-<meta property="article:modified_time" content="2020-01-16T07:48:44.286Z">
+<meta property="article:modified_time" content="2020-01-18T16:17:38.848Z">
 <meta property="article:author" content="Lrq">
-<meta property="article:tag" content="JVM">
 <meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="jdk动态代理">
+<meta property="article:tag" content="Spring AOP实现原理">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20160810080241992?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
     
@@ -244,7 +244,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-16T07:48:44.286Z" itemprop="dateUpdated">2020-01-16 15:48:44</time>
+    Last updated: <time datetime="2020-01-18T16:17:38.848Z" itemprop="dateUpdated">2020-01-19 00:17:38</time>
 </span><br>
 
 
@@ -264,7 +264,7 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" rel="tag">jdk动态代理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-AOP%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="tag">Spring AOP实现原理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" rel="tag">jdk动态代理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
 
 
             
@@ -319,7 +319,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">MySQL索引及底层实现</h4>
+      </a>
+    </div>
   
 
   

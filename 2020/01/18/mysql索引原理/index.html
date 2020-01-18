@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>MySQL索引及底层实现 | Lrq&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="MySQL索引原理">
+    <meta name="description" content="#MySQL索引及底层实现 一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL索引及底层实现">
+<meta property="og:url" content="http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="#MySQL索引及底层实现 一、什么是索引 “A database index is a data structure that improves the speed of operations in a table”–MySQL Tutorial  将以上索引定义翻译成中文，即 索引是用来提高操作数据表速度的数据结构 二、为什么要使用索引&amp;emsp;&amp;emsp;在对数据表进行查询时，若所查询的列">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.storagereview.com/images/ramdiskarticle1.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190614160951754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019061416104528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-01-18T14:33:23.906Z">
+<meta property="article:modified_time" content="2020-01-18T16:17:17.586Z">
+<meta property="article:author" content="Lrq">
+<meta property="article:tag" content="MySQL索引原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.storagereview.com/images/ramdiskarticle1.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Lrq</h5>
+          <a href="mailto:lrq_bjut@163.com" title="lrq_bjut@163.com" class="mail">lrq_bjut@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/lrq99" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">MySQL索引及底层实现</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">MySQL索引及底层实现</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-18T14:33:23.906Z" itemprop="datePublished" class="page-time">
+  2020-01-18
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/MySQL/">MySQL</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、什么是索引"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、什么是索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、为什么要使用索引"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、为什么要使用索引</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、MySQL索引的数据结构"><span class="post-toc-number">3.</span> <span class="post-toc-text">三、MySQL索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、为什么要使用B-树作为索引的数据结构"><span class="post-toc-number">4.</span> <span class="post-toc-text">四、为什么要使用B+树作为索引的数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、聚集索引和非聚集索引"><span class="post-toc-number">5.</span> <span class="post-toc-text">五、聚集索引和非聚集索引</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-mysql索引原理"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">MySQL索引及底层实现</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-18 22:33:23" datetime="2020-01-18T14:33:23.906Z"  itemprop="datePublished">2020-01-18</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/MySQL/">MySQL</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>#MySQL索引及底层实现</p>
+<h2 id="一、什么是索引"><a href="#一、什么是索引" class="headerlink" title="一、什么是索引"></a>一、什么是索引</h2><blockquote>
+<p>“A database index is a data structure that improves the speed of operations in a table”<br>–MySQL Tutorial</p>
+</blockquote>
+<p>将以上索引定义翻译成中文，即<br><font color='red' size=4> 索引是用来提高操作数据表速度的数据结构<br></font></p>
+<h2 id="二、为什么要使用索引"><a href="#二、为什么要使用索引" class="headerlink" title="二、为什么要使用索引"></a>二、为什么要使用索引</h2><p>&emsp;&emsp;在对数据表进行查询时，若所查询的列没有定义索引，MySQL则会进行顺序查找，那么若数据规模为N，查找的时间复杂度为$O(N)$。在数据规模较大时，$O(N)$的时间是达不到所预期的查找效率的，若有千万级的数据需要查询时，可能查询几十秒都是有可能的。因此，使用索引的目的就是为了加快查询速度。</p>
+<h2 id="三、MySQL索引的数据结构"><a href="#三、MySQL索引的数据结构" class="headerlink" title="三、MySQL索引的数据结构"></a>三、MySQL索引的数据结构</h2><p>&emsp;&emsp;在MySQL中，索引采用B+树的数据结构进行组织。下面与几种常见的数据结构做对比，来分析为什么要用B+树，而不是其它数据结构。</p>
+<ol>
+<li><p>二叉搜索树<br>若采用二叉搜索树对一列数据建立索引整体上的确能提高搜索的效率，但在一些特殊数据上(递增，或递减)，二叉搜索树的高度逐渐增加，导致其搜索效率逐渐低下，接近于顺序查找甚至有可能完全退化成链表，查询效率退化成顺序查询</p>
+</li>
+<li><p>二叉平衡树<br>&emsp;&emsp;既然高度会对搜索效率影响，那使用平衡树（AVL，红黑树等）是不是就能更好的解决问题了呢？答案是肯定的，平衡树可以很好的控制整棵树的高度在$O(log_2(N))$的数量级上，进而将查询效率控制在接近二分查找的效率。<br>&emsp;&emsp;但是，为什么MySQL不采用这种方式组织索引呢？我们想，数据库中文件可以基本分为“数据表”，“数据文件”，“索引文件”，这三种文件没有人会把他们都存放在内存里。实际上，它们是存放在磁盘中的（innoDB将索引文件和数据文件存放在一起，即.ibd文件，MyISAM数据文件存放在.MYD中，索引文件存放.MID中）。数据规模较大时，平衡树的高度能达到20余层，由于数据存放在磁盘中，因此在进行数据比较时需要先进行磁盘I/O从磁盘中读取节点数据到内存中，再进行比对。由于磁盘读写是以块为单位的，一个节点显然很难达到一个块那么大，更别要求整个块都是节点数据了。因此20余层平衡树需要做至多20余次磁盘I/O。从下图中可以看出，一次磁盘读取速度要比一次内存读取速度慢上至少50倍，这对于数据库查找的开销实在是太大了。因此要想办法减少磁盘I/O次数。</p>
+<div align=center>
+<img src="https://www.storagereview.com/images/ramdiskarticle1.jpg"/>
+</div>
+</li>
+<li><p>B树<br>&emsp;&emsp;B树相比于二叉平衡树来说，其每一个节点都可以存放多个数据元素，如下图。相比于二叉平衡树来说，B树可以一次性读取一个节点，存满整个磁盘块。在Windows操作系统上，每个磁盘块的大小为4KB(4096Bytes)，MySQL中，定义一个索引节点大小为16KB(16384Bytes)，因此一次磁盘I/O可以读取整整4个磁盘块。再继续分析，由于每一个节点包含许多数据元素，因此可以有效减少树的高度，从而有效减少磁盘I/O次数。<br>&emsp;&emsp;B树相比于二叉平衡树又有了性能上的改进，那为什么还要用B+树呢，B树相比于B+树，又有哪些性能上还可以提高的点呢？<br>&emsp;&emsp;我们来继续看这张图，B树的每一个节点中，包含一个数字和一个data，其中数字就是索引项，data就是本条索引项所对应的所有数据（除所索引项）。换句话说，它们一起构成了数据表中的一个记录。我们可以知道，当一个数据库的某些数据表中，可能存在许多的数据列，因此一个记录就要占很大的空间，我们保守平均按1KB来算，忽略节点中的指针域，每个节点最多也就存放16个数据。对于百万，千万级的数据来讲，其树高也达到了<br>$O(log_{16}(N))$。可以发现，树的高度相对来说还是没有很好的控制（相比于B+树）。因此有必要引入B+树了</p>
+<img src="https://img-blog.csdnimg.cn/20190614160951754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70"/>
+
+</li>
+</ol>
+<h2 id="四、为什么要使用B-树作为索引的数据结构"><a href="#四、为什么要使用B-树作为索引的数据结构" class="headerlink" title="四、为什么要使用B+树作为索引的数据结构"></a>四、为什么要使用B+树作为索引的数据结构</h2><p>&emsp;&emsp;如下图（以InnoDB引擎为例），我们可以看到，首先，B+树中只有叶子节点存放data，且不存放指针。这样做，可以将B+树每个节点中存放更多的索引项，进而控制的树的高度。我们可以计算一下，按照一个索引项4B，一个指针域6B，每一个非叶节点就可以存放$16384/(4+6)=1638$个索引项，每一个叶子节点按1KB来算，可以存放16个项。因此若B+树为3层，总共可以存放$1638<em>1638</em>16=42,928,704$个数据，已经可以满足千万级别的数据了。事实上，MySQL中B+树的层数可以控制到小于4层的，进而很好的控制了磁盘I/O次数。<br>&emsp;&emsp;其次，我们可以发现，B+树的叶子节点之间是有指针连接点(图片上是单向指针，实际上是双向指针)。这样做的好处是可以解决范围查询，如select salary from T where salary &gt; 10000，MySQL先查找到不大于10000的第一个元素，进而通过叶子节点的指针一直遍历到最后一个元素。<br><img src="https://img-blog.csdnimg.cn/2019061416104528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70"/></p>
+<h2 id="五、聚集索引和非聚集索引"><a href="#五、聚集索引和非聚集索引" class="headerlink" title="五、聚集索引和非聚集索引"></a>五、聚集索引和非聚集索引</h2><p>&emsp;&emsp;InnoDB采用支持聚集索引的实现方式，MyISAM只采用非聚集索引的实现方式。它们两者的区别在于，InnoDB将data存放在B+树的叶子节点中，而MyISAM将data存放在单独的一个.MYD文件中，B+树的叶子节点中存放访问data的指针。相比较而言，聚集索引的速度比较快，因为它可以直接找到目标data元素，而非聚集索引需要进行额外的磁盘I/O寻找相应的数据位置。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-01-18T16:17:17.586Z" itemprop="dateUpdated">2020-01-19 00:17:17</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="Lrq">
+            Lrq
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" rel="tag">MySQL索引原理</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&title=《MySQL索引及底层实现》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&title=《MySQL索引及底层实现》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MySQL索引及底层实现》 — Lrq's blogs&url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/16/JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JDK动态代理实现与原理</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Lrq &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&title=《MySQL索引及底层实现》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&title=《MySQL索引及底层实现》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MySQL索引及底层实现》 — Lrq's blogs&url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/18/mysql%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACoklEQVR42u3aS24DQQgFQN//0s42kuXxAxp7FjWrKJpPVy8aDDwe8fV8uf7//909yf297x6+8PDw8MZLf7es1w9cP5V88fr9r0/la8bDw8Pb5iWvSw73ydKvF5oEFTw8PLx78pKnrpPparqcvA0PDw/vzrzk6K8e9NVQgYeHh3cHXu911WR6koKv11rw8PDwYl7eRbrP3yv9PTw8PLxxVz1phlUP+uqhP1otHh4e3gJvni5Xyxbzgm91nXh4eHgbvN7P+40755nwqJiLh4eHF/Cqx/289ZUPEBRaXKeiGR4eHt6hEm0eW/Kt6aXg1Y3Gw8PD2+DlaXS1wX+qvJtsZbMBhoeHh9fi9UoAedjozTL0WmWjWgseHh5ezKse65O0uxowkjAQpdR4eHh4y7zJCFR1mybpcrnKgoeHh7fAm5QD8tGBvAhy4LcCHh4e3hovKTdUB6fmYaDaMPswdIWHh4e3xstHo6rtq+oSj6XUeHh4eEd5k4ZTNXWeNL0mQw94eHh4G7zJB5Ij+8DixgMHeHh4eKd4ebEgDwnVhlavtTaajMDDw8Mb8Cat+ir+bDjJAxUeHh7eBu/64erSq29IeJMUHw8PD2+Dl5Rfk4O7t2W9ewolDDw8PLyv8HrF1knRtlc+jlaIh4eHt8arFguqhd356FWvxIyHh4e3x8uP7MnSm3MNk0QfDw8Pb5nXa/k/46u3Qb0kGw8PD2+D9yxeyRhB3jY7O4yFh4eH9x1efs1LsZOUvVc0wcPDw9vjzYPBJCRcp/J5qfftd/Hw8PDWeHljLB8mqBaCR7Erz83x8PDwfsSbBIkEkI8RfNhoPDw8vJvxemWI3mBB/gMADw8P7zu8eYm2fGSfal+dqrXg4eHhnXz2MKBakjhcnsDDw8Pr8/4ASmFzqKRimY0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Lrq's Blog';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Lrq's Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
