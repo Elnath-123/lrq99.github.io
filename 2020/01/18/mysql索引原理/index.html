@@ -31,8 +31,9 @@
 <meta property="og:image" content="https://www.storagereview.com/images/ramdiskarticle1.jpg">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190614160951754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2019061416104528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1752328/332nzio50h.png?imageView2/2/w/1620">
 <meta property="article:published_time" content="2020-01-18T14:33:23.906Z">
-<meta property="article:modified_time" content="2020-01-18T16:17:17.586Z">
+<meta property="article:modified_time" content="2020-01-18T16:23:00.671Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="MySQL索引原理">
 <meta name="twitter:card" content="summary">
@@ -204,15 +205,20 @@
 <div align=center>
 <img src="https://www.storagereview.com/images/ramdiskarticle1.jpg"/>
 </div>
+<center>图1 磁盘与RAM读写性能</center><br/>
 </li>
 <li><p>B树<br>&emsp;&emsp;B树相比于二叉平衡树来说，其每一个节点都可以存放多个数据元素，如下图。相比于二叉平衡树来说，B树可以一次性读取一个节点，存满整个磁盘块。在Windows操作系统上，每个磁盘块的大小为4KB(4096Bytes)，MySQL中，定义一个索引节点大小为16KB(16384Bytes)，因此一次磁盘I/O可以读取整整4个磁盘块。再继续分析，由于每一个节点包含许多数据元素，因此可以有效减少树的高度，从而有效减少磁盘I/O次数。<br>&emsp;&emsp;B树相比于二叉平衡树又有了性能上的改进，那为什么还要用B+树呢，B树相比于B+树，又有哪些性能上还可以提高的点呢？<br>&emsp;&emsp;我们来继续看这张图，B树的每一个节点中，包含一个数字和一个data，其中数字就是索引项，data就是本条索引项所对应的所有数据（除所索引项）。换句话说，它们一起构成了数据表中的一个记录。我们可以知道，当一个数据库的某些数据表中，可能存在许多的数据列，因此一个记录就要占很大的空间，我们保守平均按1KB来算，忽略节点中的指针域，每个节点最多也就存放16个数据。对于百万，千万级的数据来讲，其树高也达到了<br>$O(log_{16}(N))$。可以发现，树的高度相对来说还是没有很好的控制（相比于B+树）。因此有必要引入B+树了</p>
 <img src="https://img-blog.csdnimg.cn/20190614160951754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70"/>
+<center>图2 B树示意图</center>
 
 </li>
 </ol>
 <h2 id="四、为什么要使用B-树作为索引的数据结构"><a href="#四、为什么要使用B-树作为索引的数据结构" class="headerlink" title="四、为什么要使用B+树作为索引的数据结构"></a>四、为什么要使用B+树作为索引的数据结构</h2><p>&emsp;&emsp;如下图（以InnoDB引擎为例），我们可以看到，首先，B+树中只有叶子节点存放data，且不存放指针。这样做，可以将B+树每个节点中存放更多的索引项，进而控制的树的高度。我们可以计算一下，按照一个索引项4B，一个指针域6B，每一个非叶节点就可以存放$16384/(4+6)=1638$个索引项，每一个叶子节点按1KB来算，可以存放16个项。因此若B+树为3层，总共可以存放$1638<em>1638</em>16=42,928,704$个数据，已经可以满足千万级别的数据了。事实上，MySQL中B+树的层数可以控制到小于4层的，进而很好的控制了磁盘I/O次数。<br>&emsp;&emsp;其次，我们可以发现，B+树的叶子节点之间是有指针连接点(图片上是单向指针，实际上是双向指针)。这样做的好处是可以解决范围查询，如select salary from T where salary &gt; 10000，MySQL先查找到不大于10000的第一个元素，进而通过叶子节点的指针一直遍历到最后一个元素。<br><img src="https://img-blog.csdnimg.cn/2019061416104528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3o2OTE4Mzc4Nw==,size_16,color_FFFFFF,t_70"/></p>
-<h2 id="五、聚集索引和非聚集索引"><a href="#五、聚集索引和非聚集索引" class="headerlink" title="五、聚集索引和非聚集索引"></a>五、聚集索引和非聚集索引</h2><p>&emsp;&emsp;InnoDB采用支持聚集索引的实现方式，MyISAM只采用非聚集索引的实现方式。它们两者的区别在于，InnoDB将data存放在B+树的叶子节点中，而MyISAM将data存放在单独的一个.MYD文件中，B+树的叶子节点中存放访问data的指针。相比较而言，聚集索引的速度比较快，因为它可以直接找到目标data元素，而非聚集索引需要进行额外的磁盘I/O寻找相应的数据位置。</p>
+<center>图3 B+树（InnoDB聚集索引）示意图</center>
 
+<h2 id="五、聚集索引和非聚集索引"><a href="#五、聚集索引和非聚集索引" class="headerlink" title="五、聚集索引和非聚集索引"></a>五、聚集索引和非聚集索引</h2><p>&emsp;&emsp;InnoDB采用支持聚集索引的实现方式，MyISAM只采用非聚集索引的实现方式。它们两者的区别在于，InnoDB将data存放在B+树的叶子节点中，而MyISAM将data存放在单独的一个.MYD文件中，B+树的叶子节点中存放访问data的指针。相比较而言，聚集索引的速度比较快，因为它可以直接找到目标data元素，而非聚集索引需要进行额外的磁盘I/O寻找相应的数据位置。</p>
+<img src="https://ask.qcloudimg.com/http-save/yehe-1752328/332nzio50h.png?imageView2/2/w/1620">
+<center>图4 MyISAM存储引擎示意图</center>
         </div>
 
         <blockquote class="post-copyright">
@@ -220,7 +226,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-18T16:17:17.586Z" itemprop="dateUpdated">2020-01-19 00:17:17</time>
+    Last updated: <time datetime="2020-01-18T16:23:00.671Z" itemprop="dateUpdated">2020-01-19 00:23:00</time>
 </span><br>
 
 
