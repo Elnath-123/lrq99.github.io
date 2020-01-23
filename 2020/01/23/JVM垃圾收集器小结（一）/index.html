@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>JVM垃圾收集器小结（一） | Lrq&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JVM,垃圾收集器">
+    <meta name="description" content="JVM垃圾收集器小结（一）一、可达性分析算法&amp;emsp;&amp;emsp;在可达性分析算法中一个核心概念是 GC Root。&amp;emsp;&amp;emsp;垃圾收集器通过从GC Root对象开始，根据引用关系，向下搜索，搜索过程所走过的路径称为“引用链”(Reference Chain)。如果某个对象到GC Root是有引用链相连的，那么这个对象就是可达的。&amp;emsp;&amp;emsp;在垃圾收集执行过程中，第一步所">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM垃圾收集器小结（一）">
+<meta property="og:url" content="http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="JVM垃圾收集器小结（一）一、可达性分析算法&amp;emsp;&amp;emsp;在可达性分析算法中一个核心概念是 GC Root。&amp;emsp;&amp;emsp;垃圾收集器通过从GC Root对象开始，根据引用关系，向下搜索，搜索过程所走过的路径称为“引用链”(Reference Chain)。如果某个对象到GC Root是有引用链相连的，那么这个对象就是可达的。&amp;emsp;&amp;emsp;在垃圾收集执行过程中，第一步所">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-23T08:08:51.936Z">
+<meta property="article:modified_time" content="2020-01-23T09:08:14.971Z">
+<meta property="article:author" content="Lrq">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="垃圾收集器">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Lrq</h5>
+          <a href="mailto:lrq_bjut@163.com" title="lrq_bjut@163.com" class="mail">lrq_bjut@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/lrq99" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JVM垃圾收集器小结（一）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">JVM垃圾收集器小结（一）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-23T08:08:51.936Z" itemprop="datePublished" class="page-time">
+  2020-01-23
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#JVM垃圾收集器小结（一）"><span class="post-toc-number">1.</span> <span class="post-toc-text">JVM垃圾收集器小结（一）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、可达性分析算法"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">一、可达性分析算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、G1与CMS的比较"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">二、G1与CMS的比较</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JVM垃圾收集器小结（一）"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">JVM垃圾收集器小结（一）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-23 16:08:51" datetime="2020-01-23T08:08:51.936Z"  itemprop="datePublished">2020-01-23</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="JVM垃圾收集器小结（一）"><a href="#JVM垃圾收集器小结（一）" class="headerlink" title="JVM垃圾收集器小结（一）"></a>JVM垃圾收集器小结（一）</h1><h2 id="一、可达性分析算法"><a href="#一、可达性分析算法" class="headerlink" title="一、可达性分析算法"></a>一、可达性分析算法</h2><p>&emsp;&emsp;在可达性分析算法中一个核心概念是 <strong><code>GC Root</code></strong>。<br>&emsp;&emsp;垃圾收集器通过从GC Root对象开始，根据引用关系，向下搜索，搜索过程所走过的路径称为<code>“引用链”(Reference Chain)</code>。如果某个对象到GC Root是有引用链相连的，那么这个对象就是可达的。<br>&emsp;&emsp;在垃圾收集执行过程中，第一步所要做的事情就是<code>初始标记</code>，即进行可达性分析。所有与GC Root之间有引用链相连的对象，都会被标记，最终不会被清理。则其余的<font color='red'>可能</font>被清理。（在并发下，可能还需要重新标记，以保证标记的正确性）</p>
+<p>&emsp;&emsp;什么对象可以被当作GC Root呢?</p>
+<ul>
+<li>虚拟机栈中的引用</li>
+<li>方法区中，类静态属性引用的对象</li>
+<li>方法区中，常量引用的对象(字符串常量池中的引用)</li>
+<li>本地方法栈中JNI(Native 方法)引用的对象</li>
+<li>运行时常量池中引用的对象</li>
+<li>JVM内部引用，如基本数据类型（int, char…）对应的Class对象、系统类加载器、常驻的异常对象(NullPointException, OutOfMemoryException…)</li>
+<li>JMXBean, JVMTI中注册的回调</li>
+</ul>
+<p>在Minor GC发生时，由于存在老年代对新生代的跨代引用，因此有些从GC Root搜索后不可达的对象可能被老年代引用，因此该新生代不需被清理。所以应该在GC Root中来扫描所有老年代对象，但是这样的话开销太大，因此引入了记忆集。在记忆集中，记录了老年代对新生代的跨代引用，因此无须将所有老年代对象加入GC Root，只需将记忆集中老年代对象加入GC Root</p>
+<p>在Old GC发生时，需要将所有年轻代对象加入GC Root进行可达性分析以解决跨代引用的问题。这是因为新生代不稳定，引用变化十分频繁，因此更新记忆集的开销会比较大。</p>
+<h2 id="二、G1与CMS的比较"><a href="#二、G1与CMS的比较" class="headerlink" title="二、G1与CMS的比较"></a>二、G1与CMS的比较</h2><ul>
+<li><p>G1划分Region，在逻辑上的分代，不要求物理上分代，而CMS是逻辑和物理都分代。</p>
+</li>
+<li><p>G1在回收阶段采用标记-整理算法，而CMS采用标记-清除算法。这也说明了CMS在回收阶段可以与用户线程并发而G1需要STW。</p>
+</li>
+<li><p>G1可面对堆内存任何部分组成回收集合（Collection Set），即Mixed GC，并且通过设定最大停顿时间来选择收益较高的Region回收。而CMS分old GC和young/minor GC，每次收集都收集所有的垃圾。</p>
+</li>
+<li><p>G1的优点：没有内部碎片，可指定最大停顿时间，按收益确定回收集<br>G1的缺点：内存占用高，因为每一个Region都需要一份卡表。而CMS只有一份卡表（记录老年代到新生代的引用）；执行负载高，因为G1不但需要写后屏障来更新卡表，还需要写前屏障实现STAB跟踪并发时的指针变化，以减少并发标记和重新标记阶段的消耗。</p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-01-23T09:08:14.971Z" itemprop="dateUpdated">2020-01-23 17:08:14</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="Lrq">
+            Lrq
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" rel="tag">垃圾收集器</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&title=《JVM垃圾收集器小结（一）》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&title=《JVM垃圾收集器小结（一）》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JVM垃圾收集器小结（一）》 — Lrq's blogs&url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/22/%E6%9E%84%E9%80%A0%E5%99%A8%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">构造器调用顺序</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Lrq &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&title=《JVM垃圾收集器小结（一）》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&title=《JVM垃圾收集器小结（一）》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JVM垃圾收集器小结（一）》 — Lrq's blogs&url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEeUlEQVR42u3ay44iMQwFUP7/pxmptz3AvU5okeLUCqF6xCeLxHZut/i6/1yPfj+/ft/5/NlkJLPx/L5/84UJEyZMmD6S6d0zkGA9uj9/Wwudx44JEyZMmK7B1L5u9v9zmpVNQ/utPHZMmDBhwvQ9TO0iWiy3wUiebyxyFEyYMGHChCnfECQLfDLcveXmZKowYcKECdO3Ma00I/NhzVLrvMOYt07fWAvHhAkTJkwfxrS+DJ/7+0/PN2HChAkTpj9nupfX0sGXUTtz1racLf8Po8CECRMmTMcyJS3A2f95Orq3pJtz1KPChAkTJkwHMu1aONsC7sqVIOb3RC1bTJgwYcJ0OFOefOY0+QGdNpVt67HtOx9WCDBhwoQJ04FMs+CTUGeF41kK3W5E8ugwYcKECdOVmGZAbZm43Sjk7c8WIk/7MWHChAnTuUyzoznrW4F8wc5RdnV361o4JkyYMGE6kGnvkr+euLZpcDLxxXgwYcKECdOxTHmQs+1CHvx6iTYvRtcHdzBhwoQJ07FMK4djVlqeCdNKMbd95wsBTJgwYcJ0ONOsYPoO6PeRJV+MTjZhwoQJE6YDmdqkdPb5ti2as7aTXReOMWHChAnTJZhmiWKefLYl43zy2hHW2x1MmDBhwnQJpmRJztuHbcD5pmGlZztro2LChAkTpmswtUt7Hl57JKhlyid4uL3AhAkTJkyXYErakPkg2uV8dtxntu3IW62YMGHChOl0pr3l3WGzcGvY7ytbY8KECROm05nqpTEotrYL/0ob8vm38gNJSckbEyZMmDCdwpR8Mg+7bSjOGplJGtyWfV+MARMmTJgwXZSpLfLmDcL8i3lI6wXr4YYAEyZMmDB9PNMsaVxPj5PfecDtkaAiecaECRMmTIcztYNbGVC+dcjDWznQUxd5MWHChAnTUUyzJXZ2wCUPLz92szLm9ruYMGHChOlEplnamT+Vbx12ZZqzduwLUEyYMGHCdCGmdtB5kjkr+M4alsn7iwYqJkyYMGE6lilPL2fB52lz/rZZ4zMvW99mOw5MmDBhwvSRTHly+4424cpiPysWz5qgmDBhwoTpXKYEot1ftGXfXe9vIVpKTJgwYcJ0LtMsBc0Lpnmy3aLMmpd51JgwYcKE6RpM+WLZfjjfarQbiHbCkutFCo0JEyZMmI5l2vBAfPwlaYjOJqmd5pX0GxMmTJgwncK0K7HMm5pJEXnlYFD7bDRhmDBhwoTpEkyz9HW2dWgT6dnmYzZhD+vfmDBhwoTpQKb2k7PG4UpBNi8W56nvhgsTJkyYMB3CdC+vpOn4fMlfb0+ub1DqMWDChAkTpmOZZoda8pJrC92y5s+2pWRMmDBhwnQlpraYO0t0Vw7TzCaj/daLt2HChAkTpsOZ8le3NG1Is8U7b5EmSfV/3oMJEyZMmL6AKT92k2Otp6ktIiZMmDBhwrSrZrwrKc0DW0mVX0wbJkyYMGE6nClfsGeNzDw1nYWdT3CCggkTJkyYrsS06+BOcv/6sZ4ZWZtyDy9MmDBhwvRZTP8AuHTpevaWOEwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Lrq's Blog';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Lrq's Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

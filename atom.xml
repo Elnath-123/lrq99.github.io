@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-22T06:40:16.242Z</updated>
+  <updated>2020-01-23T09:08:14.971Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JVM垃圾收集器小结（一）</title>
+    <link href="http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/01/23/JVM%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%8F%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/</id>
+    <published>2020-01-23T08:08:51.936Z</published>
+    <updated>2020-01-23T09:08:14.971Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="JVM垃圾收集器小结（一）"><a href="#JVM垃圾收集器小结（一）" class="headerlink" title="JVM垃圾收集器小结（一）"></a>JVM垃圾收集器小结（一）</h1><h2 id="一、可达性分析算法"><a href="#一、可达性分析算法" class="headerlink" title="一、可达性分析算法"></a>一、可达性分析算法</h2><p>&emsp;&emsp;在可达性分析算法中一个核心概念是 <strong><code>GC Root</code></strong>。<br>&emsp;&emsp;垃圾收集器通过从GC Root对象开始，根据引用关系，向下搜索，搜索过程所走过的路径称为<code>“引用链”(Reference Chain)</code>。如果某个对象到GC Root是有引用链相连的，那么这个对象就是可达的。<br>&emsp;&emsp;在垃圾收集执行过程中，第一步所要做的事情就是<code>初始标记</code>，即进行可达性分析。所有与GC Root之间有引用链相连的对象，都会被标记，最终不会被清理。则其余的<font color='red'>可能</font>被清理。（在并发下，可能还需要重新标记，以保证标记的正确性）</p><p>&emsp;&emsp;什么对象可以被当作GC Root呢?</p><ul><li>虚拟机栈中的引用</li><li>方法区中，类静态属性引用的对象</li><li>方法区中，常量引用的对象(字符串常量池中的引用)</li><li>本地方法栈中JNI(Native 方法)引用的对象</li><li>运行时常量池中引用的对象</li><li>JVM内部引用，如基本数据类型（int, char…）对应的Class对象、系统类加载器、常驻的异常对象(NullPointException, OutOfMemoryException…)</li><li>JMXBean, JVMTI中注册的回调</li></ul><p>在Minor GC发生时，由于存在老年代对新生代的跨代引用，因此有些从GC Root搜索后不可达的对象可能被老年代引用，因此该新生代不需被清理。所以应该在GC Root中来扫描所有老年代对象，但是这样的话开销太大，因此引入了记忆集。在记忆集中，记录了老年代对新生代的跨代引用，因此无须将所有老年代对象加入GC Root，只需将记忆集中老年代对象加入GC Root</p><p>在Old GC发生时，需要将所有年轻代对象加入GC Root进行可达性分析以解决跨代引用的问题。这是因为新生代不稳定，引用变化十分频繁，因此更新记忆集的开销会比较大。</p><h2 id="二、G1与CMS的比较"><a href="#二、G1与CMS的比较" class="headerlink" title="二、G1与CMS的比较"></a>二、G1与CMS的比较</h2><ul><li><p>G1划分Region，在逻辑上的分代，不要求物理上分代，而CMS是逻辑和物理都分代。</p></li><li><p>G1在回收阶段采用标记-整理算法，而CMS采用标记-清除算法。这也说明了CMS在回收阶段可以与用户线程并发而G1需要STW。</p></li><li><p>G1可面对堆内存任何部分组成回收集合（Collection Set），即Mixed GC，并且通过设定最大停顿时间来选择收益较高的Region回收。而CMS分old GC和young/minor GC，每次收集都收集所有的垃圾。</p></li><li><p>G1的优点：没有内部碎片，可指定最大停顿时间，按收益确定回收集<br>G1的缺点：内存占用高，因为每一个Region都需要一份卡表。而CMS只有一份卡表（记录老年代到新生代的引用）；执行负载高，因为G1不但需要写后屏障来更新卡表，还需要写前屏障实现STAB跟踪并发时的指针变化，以减少并发标记和重新标记阶段的消耗。</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;JVM垃圾收集器小结（一）&quot;&gt;&lt;a href=&quot;#JVM垃圾收集器小结（一）&quot; class=&quot;headerlink&quot; title=&quot;JVM垃圾收集器小结（一）&quot;&gt;&lt;/a&gt;JVM垃圾收集器小结（一）&lt;/h1&gt;&lt;h2 id=&quot;一、可达性分析算法&quot;&gt;&lt;a href=&quot;#
+      
+    
+    </summary>
+    
+    
+      <category term="Java学习" scheme="http://yoursite.com/categories/Java%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="JVM" scheme="http://yoursite.com/tags/JVM/"/>
+    
+      <category term="垃圾收集器" scheme="http://yoursite.com/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>构造器调用顺序</title>
