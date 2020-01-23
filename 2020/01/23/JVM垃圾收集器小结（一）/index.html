@@ -29,7 +29,7 @@
 <meta property="og:description" content="JVM垃圾收集器小结（一）一、可达性分析算法&amp;emsp;&amp;emsp;在可达性分析算法中一个核心概念是 GC Root。&amp;emsp;&amp;emsp;垃圾收集器通过从GC Root对象开始，根据引用关系，向下搜索，搜索过程所走过的路径称为“引用链”(Reference Chain)。如果某个对象到GC Root是有引用链相连的，那么这个对象就是可达的。&amp;emsp;&amp;emsp;在垃圾收集执行过程中，第一步所">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-23T08:08:51.936Z">
-<meta property="article:modified_time" content="2020-01-23T09:08:14.971Z">
+<meta property="article:modified_time" content="2020-01-23T09:15:29.776Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="JVM">
 <meta property="article:tag" content="垃圾收集器">
@@ -201,14 +201,11 @@
 <p>在Minor GC发生时，由于存在老年代对新生代的跨代引用，因此有些从GC Root搜索后不可达的对象可能被老年代引用，因此该新生代不需被清理。所以应该在GC Root中来扫描所有老年代对象，但是这样的话开销太大，因此引入了记忆集。在记忆集中，记录了老年代对新生代的跨代引用，因此无须将所有老年代对象加入GC Root，只需将记忆集中老年代对象加入GC Root</p>
 <p>在Old GC发生时，需要将所有年轻代对象加入GC Root进行可达性分析以解决跨代引用的问题。这是因为新生代不稳定，引用变化十分频繁，因此更新记忆集的开销会比较大。</p>
 <h2 id="二、G1与CMS的比较"><a href="#二、G1与CMS的比较" class="headerlink" title="二、G1与CMS的比较"></a>二、G1与CMS的比较</h2><ul>
-<li><p>G1划分Region，在逻辑上的分代，不要求物理上分代，而CMS是逻辑和物理都分代。</p>
-</li>
-<li><p>G1在回收阶段采用标记-整理算法，而CMS采用标记-清除算法。这也说明了CMS在回收阶段可以与用户线程并发而G1需要STW。</p>
-</li>
-<li><p>G1可面对堆内存任何部分组成回收集合（Collection Set），即Mixed GC，并且通过设定最大停顿时间来选择收益较高的Region回收。而CMS分old GC和young/minor GC，每次收集都收集所有的垃圾。</p>
-</li>
-<li><p>G1的优点：没有内部碎片，可指定最大停顿时间，按收益确定回收集<br>G1的缺点：内存占用高，因为每一个Region都需要一份卡表。而CMS只有一份卡表（记录老年代到新生代的引用）；执行负载高，因为G1不但需要写后屏障来更新卡表，还需要写前屏障实现STAB跟踪并发时的指针变化，以减少并发标记和重新标记阶段的消耗。</p>
-</li>
+<li>G1划分Region，在逻辑上的分代，不要求物理上分代，而CMS是逻辑和物理都分代。</li>
+<li>G1在回收阶段采用标记-整理算法，而CMS采用标记-清除算法。这也说明了CMS在回收阶段可以与用户线程并发而G1需要STW。</li>
+<li>G1可面对堆内存任何部分组成回收集合（Collection Set），即Mixed GC，并且通过设定最大停顿时间来选择收益较高的Region回收。而CMS分old GC和young/minor GC，每次收集都收集所有的垃圾。</li>
+<li>G1在重新标记阶段采用STAB（原始快照）方法，而CMS采用增量更新方法。</li>
+<li>G1的优点：没有内部碎片，可指定最大停顿时间，按收益确定回收集<br>G1的缺点：内存占用高，因为每一个Region都需要一份卡表。而CMS只有一份卡表（记录老年代到新生代的引用）；执行负载高，因为G1不但需要写后屏障来更新卡表，还需要写前屏障实现STAB跟踪并发时的指针变化，以减少并发标记和重新标记阶段的消耗。</li>
 </ul>
 
         </div>
@@ -218,7 +215,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-01-23T09:08:14.971Z" itemprop="dateUpdated">2020-01-23 17:08:14</time>
+    Last updated: <time datetime="2020-01-23T09:15:29.776Z" itemprop="dateUpdated">2020-01-23 17:15:29</time>
 </span><br>
 
 
