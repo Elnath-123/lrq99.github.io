@@ -21,20 +21,18 @@
     
     
     <meta name="keywords" content="Sliding Window">
-    <meta name="description" content="题目描述给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度[注]子串是连续的，子序列是可以不连续的 例如: 123输入: &quot;abcabcbb&quot;输出: 3 解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。 1234输入: &quot;pwwkew&quot;输出: 3解释: 因为无重复字符的最长子串是 &quot;wke&amp;quot">
+    <meta name="description" content="题目描述给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度[注]子串是连续的，子序列是可以不连续的 例如:123输入: &quot;abcabcbb&quot;输出: 3 解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。1234输入: &quot;pwwkew&quot;输出: 3解释: 因为无重复字符的最长子串是 &quot;wke&quot;，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="无重复字符的最长子串">
 <meta property="og:url" content="http://yoursite.com/2020/02/04/leetcode_%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
-<meta property="og:description" content="题目描述给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度[注]子串是连续的，子序列是可以不连续的 例如: 123输入: &quot;abcabcbb&quot;输出: 3 解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。 1234输入: &quot;pwwkew&quot;输出: 3解释: 因为无重复字符的最长子串是 &quot;wke&amp;quot">
+<meta property="og:description" content="题目描述给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度[注]子串是连续的，子序列是可以不连续的 例如:123输入: &quot;abcabcbb&quot;输出: 3 解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。1234输入: &quot;pwwkew&quot;输出: 3解释: 因为无重复字符的最长子串是 &quot;wke&quot;，">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://thumbnail0.baidupcs.com/thumbnail/15b283f70o59916f9ac435d38e847688?fid=3838467633-250528-432523399454725&time=1580799600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-WhuRDv13eTpT%252B2zj%252BKPJ3KC%252F3jY%253D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=803497270120873935&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video">
 <meta property="article:published_time" content="2020-02-04T06:17:54.951Z">
-<meta property="article:modified_time" content="2020-02-04T07:29:35.569Z">
+<meta property="article:modified_time" content="2020-02-07T15:30:06.899Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="Sliding Window">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://thumbnail0.baidupcs.com/thumbnail/15b283f70o59916f9ac435d38e847688?fid=3838467633-250528-432523399454725&time=1580799600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-WhuRDv13eTpT%252B2zj%252BKPJ3KC%252F3jY%253D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=803497270120873935&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video">
     
         <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
     
@@ -189,18 +187,16 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个字符串，请你找出其中不含有重复字符的 <strong>最长子串</strong> 的长度<br><code>[注]子串是连续的，子序列是可以不连续的</code></p>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;abcabcbb&quot;</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;pwwkew&quot;</span><br><span class="line">输出: 3</span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。</span><br><span class="line">     请注意，你的答案必须是 子串 的长度，&quot;pwke&quot; 是一个子序列，不是子串。</span><br></pre></td></tr></table></figure>
+<p>例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;abcabcbb&quot;</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;pwwkew&quot;</span><br><span class="line">输出: 3</span><br><span class="line">解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。</span><br><span class="line">     请注意，你的答案必须是 子串 的长度，&quot;pwke&quot; 是一个子序列，不是子串。</span><br></pre></td></tr></table></figure></p>
 <h2 id="求解方法"><a href="#求解方法" class="headerlink" title="求解方法"></a>求解方法</h2><p>维护一个滑动窗口(Sliding Window)，窗口中保存不相同的字符串，窗口的大小即当前最长的<strong>不重复子串</strong></p>
 <div align=center>
-<img src="https://thumbnail0.baidupcs.com/thumbnail/15b283f70o59916f9ac435d38e847688?fid=3838467633-250528-432523399454725&time=1580799600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-WhuRDv13eTpT%2B2zj%2BKPJ3KC%2F3jY%3D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=803497270120873935&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video" >
+<img src=http://m.qpic.cn/psc?/V11D01dE1rpq1N/2aGbA7qLSN6GeC6g0ZsuRZrddlpadR0d5Nd9mJvE.kJQv9USNbEG3jPeKBhH86pOYOpuP0JpToRHpe2mmREhtH.JTLOC2Wuqef9W1TCqHI0!/b&bo=6gHmAAAAAAARFy0!&rf=viewer_4>
 </div>
 
 <p>&emsp;&emsp;如图，当前窗口大小为3。当j指向第四个字符元素时，若窗口继续增大，则index=1处的元素与index=4处的元素重复，不符合。因此窗口的下界应该增大（i增大）。<br>&emsp;&emsp;i应该增长多少，才能保证算法的效率尽可能高呢?<br>&emsp;&emsp;我们发现，index=1和index=4处的字符元素相同，它们之间所构成的<strong>最大窗口</strong>的大小，一定小于等于当前的窗口大小（下图为等于当前窗口大小的情况）。因此，我们可以将i直接增长到index=1字符的下一处，即index=2。</p>
 <p>&emsp;&emsp;当然，有时也会遇到以下情况。</p>
 <div align=center>
-<img src=https://thumbnail0.baidupcs.com/thumbnail/9005517a0h581d1c22027149cbabf88f?fid=3838467633-250528-802190918337734&time=1580799600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-hkDnaJcgNvtMf0Sxr3X45VbKEJM%3D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=803506081485038251&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video>
+<img src=http://m.qpic.cn/psc?/V11D01dE1rpq1N/2aGbA7qLSN6GeC6g0ZsuRcqaAFNg8ONqrU.xTUpsB4Ds8or*AlJ7eh6ya9mX0tPPK9K5Kt5fjS64ch5yu2Y6E*27N0Gtwg4VIiiBd1UOW68!/b&bo=1QHjAAAAAAARFxc!&rf=viewer_4>
 </div>
 
 <p>&emsp;&emsp;j = 3时，由于有两个c相同，故i从i = 0跳至i = 2。j = 4时，此时又发现index = 0处的字符元素与index = 4处的字符元素相同，可此时i &gt; 前一个字符的index(index = 0)。这种情况下i不能跳到index = 1处。<br>&emsp;&emsp;故，i在进行跳转时，i = max(前一个相同字符的索引 + 1, i)</p>
@@ -213,7 +209,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-02-04T07:29:35.569Z" itemprop="dateUpdated">2020-02-04 15:29:35</time>
+    Last updated: <time datetime="2020-02-07T15:30:06.899Z" itemprop="dateUpdated">2020-02-07 23:30:06</time>
 </span><br>
 
 
