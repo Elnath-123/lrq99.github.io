@@ -24,18 +24,18 @@
     <meta name="description" content="简述&amp;emsp;&amp;emsp;递归是函数调用函数本身，并且每一次都做相同的动作。因此在看待递归时，只需要将子问题解决（解决子问题的时候需要使用到当前解），合并到当前的解中，然后去递归的求解下一个子问题，直到最大的问题的解被解决。&amp;emsp;&amp;emsp;下面两个问题虽然都和反转链表有关，虽然我都使用了递归求解，但是仔细品味，两者递归的使用，虽然都是正确的，但是它们表达出的思想是不同的。 第一题：两两交">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一些关于递归算法的总结">
-<meta property="og:url" content="http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
 <meta property="og:description" content="简述&amp;emsp;&amp;emsp;递归是函数调用函数本身，并且每一次都做相同的动作。因此在看待递归时，只需要将子问题解决（解决子问题的时候需要使用到当前解），合并到当前的解中，然后去递归的求解下一个子问题，直到最大的问题的解被解决。&amp;emsp;&amp;emsp;下面两个问题虽然都和反转链表有关，虽然我都使用了递归求解，但是仔细品味，两者递归的使用，虽然都是正确的，但是它们表达出的思想是不同的。 第一题：两两交">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E8%8A%82%E7%82%B9/beforeswap.jpg">
-<meta property="og:image" content="http://yoursite.com/.com//%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E8%8A%82%E7%82%B9/after.jpg">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/beforeswap.JPG">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/afterswap.jpg">
 <meta property="article:published_time" content="2020-02-07T14:42:55.941Z">
-<meta property="article:modified_time" content="2020-02-07T15:41:55.489Z">
+<meta property="article:modified_time" content="2020-02-07T16:23:31.083Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="recursion">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E8%8A%82%E7%82%B9/beforeswap.jpg">
+<meta name="twitter:image" content="http://q5cad0flf.bkt.clouddn.com/beforeswap.JPG">
     
         <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
     
@@ -168,7 +168,7 @@
     </aside>
 
 
-<article id="post-leetcode_反转链表"
+<article id="post-一些递归算法的总结"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
@@ -197,12 +197,21 @@
 <li>返回交换后的，本级递归的头节点供调用方的head所指向。</li>
 </ol>
 <p>交换前：</p>
-<p><div align="center">
-<img src="/.com//两两交换链表节点/beforeswap.jpg">
-</div><br>交换后</p>
-<p><div align="center">
-<img src="/.com//两两交换链表节点/after.jpg">
-</div><br>“未交换过的节点”虽然还指向head节点，但是这是不影响的，因为对“未交换过的节点”中的相邻节点进行交换时，temp-&gt;next = head会将这条指向边改变。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://q5cad0flf.bkt.clouddn.com/beforeswap.JPG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure> 
+<p>交换后<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://q5cad0flf.bkt.clouddn.com/afterswap.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>“未交换过的节点”虽然还指向head节点，但是这是不影响的，因为对“未交换过的节点”中的相邻节点进行交换时，temp-&gt;next = head会将这条指向边改变。</p>
 <h3 id="实现代码-Java"><a href="#实现代码-Java" class="headerlink" title="实现代码(Java)"></a>实现代码(Java)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairs</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode tmp = head.next;</span><br><span class="line">        head.next = swapPairs(tmp.next);</span><br><span class="line">        tmp.next = head;</span><br><span class="line">        <span class="keyword">return</span> tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="第二题：反转链表"><a href="#第二题：反转链表" class="headerlink" title="第二题：反转链表"></a>第二题：反转链表</h2><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>反转一个单链表。<br>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL</span><br><span class="line">输出: 5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;NULL</span><br></pre></td></tr></table></figure></p>
 <h3 id="实现思路-1"><a href="#实现思路-1" class="headerlink" title="实现思路"></a>实现思路</h3>
@@ -213,7 +222,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-02-07T15:41:55.489Z" itemprop="dateUpdated">2020-02-07 23:41:55</time>
+    Last updated: <time datetime="2020-02-07T16:23:31.083Z" itemprop="dateUpdated">2020-02-08 00:23:31</time>
 </span><br>
 
 
@@ -243,7 +252,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&title=《一些关于递归算法的总结》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&title=《一些关于递归算法的总结》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -253,22 +262,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&title=《一些关于递归算法的总结》 — Lrq's blogs&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&title=《一些关于递归算法的总结》 — Lrq's blogs&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《一些关于递归算法的总结》 — Lrq's blogs&url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&via=http://yoursite.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《一些关于递归算法的总结》 — Lrq's blogs&url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&via=http://yoursite.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -369,7 +378,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&title=《一些关于递归算法的总结》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&title=《一些关于递归算法的总结》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -379,22 +388,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&title=《一些关于递归算法的总结》 — Lrq's blogs&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&title=《一些关于递归算法的总结》 — Lrq's blogs&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《一些关于递归算法的总结》 — Lrq's blogs&url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/&via=http://yoursite.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《一些关于递归算法的总结》 — Lrq's blogs&url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/&via=http://yoursite.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/leetcode_%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -405,7 +414,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aQXIiMQwF0Nz/0jNVs8pUQvO/1AYWjxVFwO3nhaRI/vqKX3/+vb6///7Jz2/+fF1/Z7bObS88PDy80davl3v0/hH4Gtbu6vqInxwBHh4e3jFemwza4D5LHtf7ud4zHh4e3ifw8vJ6FtZnSQIPDw/vk3mzg2hL8Paw8PDw8N7FS5oR+QPacN82fI/0WvDw8PBi3mwA9t73x+d7eHh4eKOpeh6UNxcC8lRR7xYPDw/vAC8ZNbUjqHNjsFmJj4eHh3cvLx9Q7ZsOSYP4ruf+l/fw8PDwjvHubVJcf3JdNM8uWj38jwEPDw/vVl47BmuvT+XjtFlxn1wywMPDwzvNS5ZuQ3/bhJ21S57sFg8PD+9W3ubBLSz5JEfekPHw8PDwSt4sHM8Ad5XvxU7w8PDwDvDyi1CbNuu+TG+vERQTMzw8PLyS1zZe84FTeyUrSUVtysHDw8M7x8uXbv+aD6tuKJ33J4eHh4eXdl8LfJse8jVn28XDw8N7Pe86KG/SQ54MNs3iJwo8PDy8l/DaNJCUxflorU1IT9rQeHh4eAd4+xFXfgSzdsb+MgEeHh7evbx9gN40bfOgP7wJgIeHh3eANyth28C9P5RZbxYPDw/vBO9ECzVpEGyauUmhH50NHh4e3prXAmbJ4LrpcN2YaFMIHh4e3it5eWm7v+e1gT35FR4eHt4B3uwBLTIfiSVrJq2N1fnh4eHhXfLaYX/bUNgc0CbN4OHh4b2LNwPnY/57LwrUiQEPDw9vxBsG3Li1ui/c2/8Phkg8PDy8kteG7H3gztNGe63hl9/i4eHhHePtS+RZkyJfOU85eHh4eJ/Da0vq5CLCZhhWlNR4eHh4b+XlJfJ+bNY2fFclNR4eHt6BZsQsGexXy0ttPDw8vNfwZgOwfdk9C/c3T/bw8PDwOt5fmyXaT+oYjJAAAAAASUVORK5CYII=" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD/UlEQVR42u3dwU7kQAwEUP7/p2elPSEt6amyE2CllxOCTCd5OXjsLomPj/h4/T0+//z5N/+eeXXO1afOfz1f8eqc8/mrAwcOHDhwBI96deSPcSa4WjP5/fnekheWr4MDBw4cOO7iSIpr8te8DJ/vYVOk89eJAwcOHDh+liN51E2XlHDMQHHgwIEDx+/kmI0LW7L8NbSlFwcOHDhwfCdHMhzMh4At4my7KB8gPjIrxYEDBw4caTUsitb/8vPj+Q4cOHDgwFFGB9pgQRs7mA0i25jFm6fAgQMHDhxrjna01w74Zu3ZLLiQ4Eb3gAMHDhw4HuaYldLZmvUWUdlqRivjwIEDB44Fx7kIte1T+0htgWw/VccgcODAgQPHTRxnmllD9cTmVhuGqBs8HDhw4MBxz6ysCAEkMbhZM9Y2fvmXgHociQMHDhw4Fhz7gMImppBcPR8mziijfAcOHDhw4Jjvv6xK5qzl25TwPLhwc8QBBw4cOHBcnPnEhVu+2TmbsEXUy+LAgQMHjhHHucS2QYF8GJffen7FdlMq+nKAAwcOHDhKjtfoSG46iRHksYO20J7ffD0rxYEDBw4c5Tl5q1O3QKMS2z5MC/Tm/nHgwIEDxwMcec/XXn7WLrbledPU4cCBAweOpznaJiovpe2a+zhFNHbEgQMHDhwLjnxLJo+d5ZtGs4L6YKOIAwcOHDjunLnV/555X3Tz9WdX39wzDhw4cOCYfWpWCNtye3VOG8u7q9DWOUEcOHDgwBFzbHZbZnG62frD7w6zWSkOHDhw4Fhz1GGyx1qp2YZTzlc0cjhw4MCBY/QseZMza89mLd++zcuDDl/swuHAgQMHjjXHJr5wVxHNx4htYc7LLQ4cOHDg2HNsFkrKXjvyS9rCHKst3jhw4MCBY8/RNj95LGC25iYesR9Q4sCBAweOPccTo8B9Kzh74BuaNBw4cODAcStHuxW0efhNU9f2psmXCRw4cODAcRfHrCWbbSa1ZfL8Ytr4QhSAwIEDBw4ca442XtBuNc3iDvshYPT9Ig9G4MCBAweO+Optt9deZr/F1ZbS2WrD5hcHDhw4cBynYW1Njir2uubPhpLDuAMOHDhw4FhztKVrNi7M4e7ajtqEOXDgwIEDx4bjVR4z702x3AwQ8/t/MxzEgQMHDhzzpMHqIduC3Ubi2o2lB4s0Dhw4cOCIp2FtIODceu23gjZFdFhoceDAgQPHTRz5lk9bejfbVLPoWzt2LHbJcODAgQPHt3Bs2q12FJi8krZs48CBAweOn+LYhOfyx2vbtmQoWec7cODAgQPHmiMZDiYjtmSFdoB4V3kuCi0OHDhw4FhwtIGGvJ3brJC3Z5vfDIFw4MCBA8fXxx/6S/ZJ0p7wggAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
@@ -489,23 +498,5 @@ MathJax.Hub.Queue(function() {
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<!--
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
--->
 </body>
 </html>
