@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Data transformation pipeline - Data Cleaning(2) | Lrq&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PySpark">
+    <meta name="description" content="Data CleaningWhy we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to clea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data transformation pipeline - Data Cleaning(2)">
+<meta property="og:url" content="http://yoursite.com/2020/02/16/DataCleaning/index.html">
+<meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="Data CleaningWhy we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to clea">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/before.JPG">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/after.JPG">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/compare.JPG">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/ConditionallyReplacingValues.JPG">
+<meta property="article:published_time" content="2020-02-16T14:20:38.112Z">
+<meta property="article:modified_time" content="2020-02-16T14:31:57.982Z">
+<meta property="article:author" content="Lrq">
+<meta property="article:tag" content="PySpark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q5cad0flf.bkt.clouddn.com/before.JPG">
+    
+        <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Lrq</h5>
+          <a href="mailto:lrq_bjut@163.com" title="lrq_bjut@163.com" class="mail">lrq_bjut@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/lrq99" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Data transformation pipeline - Data Cleaning(2)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-02-16T14:20:38.112Z" itemprop="datePublished" class="page-time">
+  2020-02-16
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Data-Science/">Data Science</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Data-Cleaning"><span class="post-toc-number">1.</span> <span class="post-toc-text">Data Cleaning</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Why-we-should-clean-data"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Why we should clean data?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#How-to-clean-data"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">How to clean data</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Removing-invalid-rows"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">1. Removing invalid rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Filling-unknown-data"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">2.Filling unknown data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-Conditionally-replacing-values"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">3. Conditionally replacing values</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-DataCleaning"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-02-16 22:20:38" datetime="2020-02-16T14:20:38.112Z"  itemprop="datePublished">2020-02-16</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Data-Science/">Data Science</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning"></a>Data Cleaning</h1><h2 id="Why-we-should-clean-data"><a href="#Why-we-should-clean-data" class="headerlink" title="Why we should clean data?"></a>Why we should clean data?</h2><p>&emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data.</p>
+<h2 id="How-to-clean-data"><a href="#How-to-clean-data" class="headerlink" title="How to clean data"></a>How to clean data</h2><p>&emsp;We use PySpark package to achieve the need. We import PySpark package and use the function they provided for us.</p>
+<h3 id="1-Removing-invalid-rows"><a href="#1-Removing-invalid-rows" class="headerlink" title="1. Removing invalid rows"></a>1. Removing invalid rows</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="comment"># First, we create a session</span></span><br><span class="line">spark = SparkSession.builder.getOrCreate()</span><br><span class="line"><span class="comment"># We add parameters mode='DROPMALFORMED' in the 'options' function to drop invalid rows of dataset.</span></span><br><span class="line">ratings = spark.read.options(header=<span class="literal">True</span>, mode=<span class="string">'DROPMALFORMED'</span>).csv(<span class="string">'my_csv_path.csv'</span>)</span><br><span class="line">ratings.show()</span><br></pre></td></tr></table></figure>
+<p>If we don’t use the mode=’DROPMALFORMED’ parameter, as you can see, the data ratings show to us include null value. But once we add that parameters, the row contains null value is deleted.</p>
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/before.JPG">
+    Pic.1 Before Using parameter
+</div>
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/after.JPG">
+    Pic.2 after Using parameter
+</div>
+
+<h3 id="2-Filling-unknown-data"><a href="#2-Filling-unknown-data" class="headerlink" title="2.Filling unknown data"></a>2.Filling unknown data</h3><p>&emsp;What if almost all fields in a row are valid, except one or two. Sometimes, these fields are not critical and can be left empty, sometimes they can be given a default value.<br>After we Removing the invalid rows, we execute a operation as follow.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'BEFORE'</span>)</span><br><span class="line">ratings.show()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'AFTER'</span>)</span><br><span class="line"><span class="comment"># Replace nulls with arbitrary value on column subset("comfort")</span></span><br><span class="line">ratings = ratings.fillna(<span class="number">4</span>, subset=[<span class="string">"comfort"</span>])</span><br><span class="line">ratings.show()</span><br></pre></td></tr></table></figure></p>
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/compare.JPG">
+    Pic.3 Compare between filling unknown data or not
+</div>
+
+<h3 id="3-Conditionally-replacing-values"><a href="#3-Conditionally-replacing-values" class="headerlink" title="3. Conditionally replacing values"></a>3. Conditionally replacing values</h3><p>&emsp;Another common situation is that you have values that you want to replace or that don’t make any sense. You can select the column to be transformed by using the <code>.withColumn()</code> method, conditionally replace those values using the <code>pyspark.sql.functions.when</code> function when values meet a given condition or leave them unaltered when they don’t with the <code>.otherwise()</code> method.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> col, when</span><br><span class="line">print(<span class="string">"Before"</span>)</span><br><span class="line">categorized_ratings.show()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"After"</span>)</span><br><span class="line"><span class="comment"># Add/relabel the column</span></span><br><span class="line">categorized_ratings = ratings.withColumn(</span><br><span class="line">    <span class="string">"comfort"</span>,</span><br><span class="line">    <span class="comment"># Express the condition in terms of column operations</span></span><br><span class="line">    when(col(<span class="string">"comfort"</span>) &gt; <span class="number">3</span>, <span class="string">"sufficient"</span>).otherwise(<span class="string">"insufficient"</span>))</span><br><span class="line"></span><br><span class="line">categorized_ratings.show()</span><br></pre></td></tr></table></figure></p>
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/ConditionallyReplacingValues.JPG">
+    Pic.4 Compare between replacing values or not
+</div>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-02-16T14:31:57.982Z" itemprop="dateUpdated">2020-02-16 22:31:57</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="Lrq">
+            Lrq
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PySpark/" rel="tag">PySpark</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/16/DataCleaning/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/16/DataCleaning/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/02/07/%E4%B8%80%E4%BA%9B%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%BB%E7%BB%93/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">一些关于递归算法的总结</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Lrq &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/16/DataCleaning/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/16/DataCleaning/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aO47jMBAFQN//0t50EsvvsbUGRBajgSybrAka/eHrFa93sD69//fJp0+vn9+2MDAwHstIDnd9rMkunz7Nz4aBgXEO49PG+Tvtt66P3u6LgYGBsRgEL4PpdWjGwMDAmAfcPH1ce4KBgYGxVsRGPzcIoD+qxTEwMB7IyJtlv//7v8w3MDAwHsV4lytJE+eJYH0qDAyMrRltetdeqritlZacBwMDY1PG9QDyGrCWm7VJYVSyYmBgHMNIxpCToJynlW1KioGBsTdjbZC51j5rm2h5oMfAwNib0V5LTYJpMm5MkMWwEwMD4wBG0kpbu4pxPTaY16TRBhgYGA9nzAeNbaidDEG/BGUMDIytGe2gsT1oXr62AAwMjDMZSemYZ2h5ITq5fIaBgbE3466ErL0uluxb7IiBgXEk467x5Nr4s01SMTAw9masDSknDf21d4pUFQMDYztGOyz85T21IgRjYGBszWhL2TZBXPvNvNyN+nwYGBgbMeaFaxsi15LOL003DAyMrRnJyoNp+2QtQcTAwDiZkZejkzJ4rRh+zX8aAwPjUYx3udrm2qTRVvzLMDAwtmbMm/tJYtcmf/PEEQMDYz9GEmTXWmZ3hezFDBcDA2M7RnGtYVzWTpK8L6UsBgYGRjkYSJLLtriNLltgYGBgBIw8ECew6LsYGBgHMPKrpWtF772jTQwMjNMYbaKWJH/tpY12tDmab2BgYDyJ8Q/LhXRynbxS+gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Lrq's Blog';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Lrq's Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!--
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
+</body>
+</html>
