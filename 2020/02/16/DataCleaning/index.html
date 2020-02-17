@@ -14,26 +14,26 @@
     
     
     
-    <title>Data transformation pipeline - Data Cleaning(2) | Lrq&#39;s blogs</title>
+    <title>Data transformation pipeline - Data Cleaning(1) | Lrq&#39;s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content="PySpark">
-    <meta name="description" content="Data CleaningWhy we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to clea">
+    <meta name="description" content="Data Cleaning(1)Why we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Data transformation pipeline - Data Cleaning(2)">
+<meta property="og:title" content="Data transformation pipeline - Data Cleaning(1)">
 <meta property="og:url" content="http://yoursite.com/2020/02/16/DataCleaning/index.html">
 <meta property="og:site_name" content="Lrq&#39;s blogs">
-<meta property="og:description" content="Data CleaningWhy we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to clea">
+<meta property="og:description" content="Data Cleaning(1)Why we should clean data?&amp;emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data. How to c">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/before.JPG">
 <meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/after.JPG">
 <meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/compare.JPG">
 <meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/ConditionallyReplacingValues.JPG">
 <meta property="article:published_time" content="2020-02-16T14:20:38.112Z">
-<meta property="article:modified_time" content="2020-02-16T14:31:57.982Z">
+<meta property="article:modified_time" content="2020-02-17T06:11:41.595Z">
 <meta property="article:author" content="Lrq">
 <meta property="article:tag" content="PySpark">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">Data transformation pipeline - Data Cleaning(2)</div>
+        <div class="flex-col header-title ellipsis">Data transformation pipeline - Data Cleaning(1)</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -140,7 +140,7 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <h1 class="title">Data transformation pipeline - Data Cleaning(1)</h1>
         <h5 class="subtitle">
             
                 <time datetime="2020-02-16T14:20:38.112Z" itemprop="datePublished" class="page-time">
@@ -165,7 +165,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Data-Cleaning"><span class="post-toc-number">1.</span> <span class="post-toc-text">Data Cleaning</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Why-we-should-clean-data"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Why we should clean data?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#How-to-clean-data"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">How to clean data</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Removing-invalid-rows"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">1. Removing invalid rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Filling-unknown-data"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">2.Filling unknown data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-Conditionally-replacing-values"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">3. Conditionally replacing values</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Data-Cleaning-1"><span class="post-toc-number">1.</span> <span class="post-toc-text">Data Cleaning(1)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Why-we-should-clean-data"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Why we should clean data?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#How-to-clean-data"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">How to clean data</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Removing-invalid-rows"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">1. Removing invalid rows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Filling-unknown-data"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">2.Filling unknown data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-Conditionally-replacing-values"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">3. Conditionally replacing values</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Reference"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Reference</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -174,7 +174,7 @@
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <h1 class="post-card-title">Data transformation pipeline - Data Cleaning(1)</h1>
         <div class="post-meta">
             <time class="post-time" title="2020-02-16 22:20:38" datetime="2020-02-16T14:20:38.112Z"  itemprop="datePublished">2020-02-16</time>
 
@@ -191,7 +191,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="Data-Cleaning"><a href="#Data-Cleaning" class="headerlink" title="Data Cleaning"></a>Data Cleaning</h1><h2 id="Why-we-should-clean-data"><a href="#Why-we-should-clean-data" class="headerlink" title="Why we should clean data?"></a>Why we should clean data?</h2><p>&emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data.</p>
+            <h1 id="Data-Cleaning-1"><a href="#Data-Cleaning-1" class="headerlink" title="Data Cleaning(1)"></a>Data Cleaning(1)</h1><h2 id="Why-we-should-clean-data"><a href="#Why-we-should-clean-data" class="headerlink" title="Why we should clean data?"></a>Why we should clean data?</h2><p>&emsp;Most data sources people work with are not ready for analytics. Hence, the second step in the data transformation pipeline is cleaning the data.</p>
 <h2 id="How-to-clean-data"><a href="#How-to-clean-data" class="headerlink" title="How to clean data"></a>How to clean data</h2><p>&emsp;We use PySpark package to achieve the need. We import PySpark package and use the function they provided for us.</p>
 <h3 id="1-Removing-invalid-rows"><a href="#1-Removing-invalid-rows" class="headerlink" title="1. Removing invalid rows"></a>1. Removing invalid rows</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="comment"># First, we create a session</span></span><br><span class="line">spark = SparkSession.builder.getOrCreate()</span><br><span class="line"><span class="comment"># We add parameters mode='DROPMALFORMED' in the 'options' function to drop invalid rows of dataset.</span></span><br><span class="line">ratings = spark.read.options(header=<span class="literal">True</span>, mode=<span class="string">'DROPMALFORMED'</span>).csv(<span class="string">'my_csv_path.csv'</span>)</span><br><span class="line">ratings.show()</span><br></pre></td></tr></table></figure>
 <p>If we don’t use the mode=’DROPMALFORMED’ parameter, as you can see, the data ratings show to us include null value. But once we add that parameters, the row contains null value is deleted.</p>
@@ -216,6 +216,8 @@
     Pic.4 Compare between replacing values or not
 </div>
 
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://datacamp.com" target="_blank" rel="noopener">https://datacamp.com</a></p>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -223,7 +225,7 @@
     <div class="content">
         
 <span class="post-time">
-    Last updated: <time datetime="2020-02-16T14:31:57.982Z" itemprop="dateUpdated">2020-02-16 22:31:57</time>
+    Last updated: <time datetime="2020-02-17T06:11:41.595Z" itemprop="dateUpdated">2020-02-17 14:11:41</time>
 </span><br>
 
 
@@ -253,7 +255,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -263,7 +265,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -273,7 +275,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -298,7 +300,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/02/17/DataCleaning(2)/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Data transformation pipeline - Data Cleaning(2)</h4>
+      </a>
+    </div>
   
 
   
@@ -379,7 +388,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -389,7 +398,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/16/DataCleaning/&title=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -399,7 +408,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(1)》 — Lrq's blogs&url=http://yoursite.com/2020/02/16/DataCleaning/&via=http://yoursite.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>

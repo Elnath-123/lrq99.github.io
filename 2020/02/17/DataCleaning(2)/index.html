@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Data transformation pipeline - Data Cleaning(2) | Lrq&#39;s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="PySpark">
+    <meta name="description" content="Data Cleaning(2)Creating a deployable artifact&amp;emsp;The next job we need to do is to package our application after cleaning data. If my code consists of many modules, I must package them in the zip fo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data transformation pipeline - Data Cleaning(2)">
+<meta property="og:url" content="http://yoursite.com/2020/02/17/DataCleaning(2)/index.html">
+<meta property="og:site_name" content="Lrq&#39;s blogs">
+<meta property="og:description" content="Data Cleaning(2)Creating a deployable artifact&amp;emsp;The next job we need to do is to package our application after cleaning data. If my code consists of many modules, I must package them in the zip fo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/2020-02-17-12-29-32.png">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/2020-02-17-12-37-44.png">
+<meta property="og:image" content="http://q5cad0flf.bkt.clouddn.com/2020-02-17-14-25-58.png">
+<meta property="article:published_time" content="2020-02-17T06:29:27.796Z">
+<meta property="article:modified_time" content="2020-02-17T06:29:27.854Z">
+<meta property="article:author" content="Lrq">
+<meta property="article:tag" content="PySpark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q5cad0flf.bkt.clouddn.com/2020-02-17-12-29-32.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="Lrq&#39;s blogs" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Lrq</h5>
+          <a href="mailto:lrq_bjut@163.com" title="lrq_bjut@163.com" class="mail">lrq_bjut@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/lrq99" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Data transformation pipeline - Data Cleaning(2)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-02-17T06:29:27.796Z" itemprop="datePublished" class="page-time">
+  2020-02-17
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Data-Science/">Data Science</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Data-Cleaning-2"><span class="post-toc-number">1.</span> <span class="post-toc-text">Data Cleaning(2)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Creating-a-deployable-artifact"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Creating a deployable artifact</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Submitting-Spark-job"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Submitting Spark job</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Verifying-your-pipeline’s-output"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Verifying your pipeline’s output</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Reference"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Reference</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-DataCleaning(2)"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Data transformation pipeline - Data Cleaning(2)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-02-17 14:29:27" datetime="2020-02-17T06:29:27.796Z"  itemprop="datePublished">2020-02-17</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Data-Science/">Data Science</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Data-Cleaning-2"><a href="#Data-Cleaning-2" class="headerlink" title="Data Cleaning(2)"></a>Data Cleaning(2)</h1><h2 id="Creating-a-deployable-artifact"><a href="#Creating-a-deployable-artifact" class="headerlink" title="Creating a deployable artifact"></a>Creating a deployable artifact</h2><p>&emsp;The next job we need to do is to package our application after cleaning data. If my code consists of many modules, I must package them in the <code>zip</code> format by navigating the root of my pipeline.<br>&emsp;Here, the root of the pipeline is the directory of ‘pydiaper’, so we <code>cd</code> to the ‘spark_pipeline’ directory and invoke <code>zip --recurse-paths zip_file.zip pipeline_folder</code>, where <code>zip_file</code>is <strong>pydiaper.zip</strong> and <code>pipeline_folder</code> is <strong>pydiaper</strong>. Just like this, <code>zip --recurse-paths pydiaper.zip pydiaper</code>.</p>
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/2020-02-17-12-29-32.png">
+    <br>
+    Pic.1 Directory
+</div>
+<br><br>
+&emsp;As we can see, the pydiaper.zip is generated.
+<div align="center">
+    <img src="http://q5cad0flf.bkt.clouddn.com/2020-02-17-12-37-44.png">
+    <br>
+    Pic.2 Directory After Generate pydiaper.zip
+</div>
+
+<h2 id="Submitting-Spark-job"><a href="#Submitting-Spark-job" class="headerlink" title="Submitting Spark job"></a>Submitting Spark job</h2><p>&emsp;With the dependencies of a job ready to be distributed across a cluster’s nodes, we can submit a job to a cluster, using command <code>spark-submit --py-files PY_FILES MAIN_PYTHON_FILE</code>, where PY_FILES is the archive file we zipped, and MIAN_PYTHON_FILE is the entry point of your application. Now we are in <code>~/workspace/spark_pipelines/pydiaper</code> directory, So we invoke <code>spark-submit --py-files pydiapers.zip pydiaper/cleaning/clean_ratings.py</code></p>
+<h2 id="Verifying-your-pipeline’s-output"><a href="#Verifying-your-pipeline’s-output" class="headerlink" title="Verifying your pipeline’s output"></a>Verifying your pipeline’s output</h2><p>&emsp;After We submit application with spark-submit, we want to check whether it actually created file in the right location.<br>&emsp;We <code>cd</code> to <code>~/workspace/mnt/data_lake/clean/product_ratings</code> and <code>ls</code> the files description. We can find two parquet format files. The Spark distributed the data among the number of cores this machine has (in this case 2) and based on the size of the data that needs to be processed, created two partitions for it. Each partition ends up in one of these parquet files.</p>
+<p><div align="center"><img src="http://q5cad0flf.bkt.clouddn.com/2020-02-17-14-25-58.png">Pic.3 Pipeline's Output</div><br>  </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://datacamp.com" target="_blank" rel="noopener">https://datacamp.com</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-02-17T06:29:27.854Z" itemprop="dateUpdated">2020-02-17 14:29:27</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="Lrq">
+            Lrq
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PySpark/" rel="tag">PySpark</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/17/DataCleaning(2)/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/17/DataCleaning(2)/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/17/DataCleaning(2)/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/17/DataCleaning(2)/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/17/DataCleaning(2)/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/02/16/DataCleaning/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Data transformation pipeline - Data Cleaning(1)</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Lrq &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2020/02/17/DataCleaning(2)/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2020/02/17/DataCleaning(2)/&title=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/17/DataCleaning(2)/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Data transformation pipeline - Data Cleaning(2)》 — Lrq's blogs&url=http://yoursite.com/2020/02/17/DataCleaning(2)/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/17/DataCleaning(2)/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3ay04jMRAFUP7/pzPSrJCYhHurApp2H69aCaJ9jFTUwx8f8Xr8XZ+fv37y7Nv882c/87aFgYFxWcbj5Xq20a/Pr9nt2/O9YWBg3Iex38pso/tjwsDAwJilg+22kt+DgYGBkQfcJI1Lwm57BBgYGBhtMblv3uVp4ptrcQwMjAsyZoOB33n+8fkGBgbGf894jFbbmGsDaL0fDAyMoxlJ8ZkUkDl7VvRGgRgDA+NQRt78qs+mHHPOEsR//N/AwMA4mrHZaJIa5hfO6j1gYGAczdinaO23+/HA0yCOgYFxA0abxs1SybZ5VwxQMTAwjmbMWmkzTJvLJbvCwMC4DyMJu20AzVtmeYKIgYFxT8ZmJDkrevfNteLvgIGBcXFG/srXr3lXM24YoDEwMI5m5CPJFrwfcyYHVE9WMTAwLstor5/+dNAclscYGBiHMvLULVltsH4NXl0Iw8DAOIixuXLRhunXgFnpO5xvYGBgXJCx0beXwPLrF/VxYGBg3IDRXtiaFZ9tQM9TSQwMjDswZsXnbOTZbhQDAwMjvzbRFqWrqrpsFGJgYJzKmLX+Nz35ZOSZHEHR+cPAwLg4YzYZbBPEtlTeBHoMDIxTGe0VijxwbxpteWjGwMC4DyMvaGeRe5/kfQPDwMDAWDf9Z8E0SR8xMDAwkuRvtunNsKHINzEwMA5iJBttW2ObC6nDCxYYGBiHMtoSdJNQ5mlfciir+QYGBsY1GH8AjQJ0codZLWsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Lrq's Blog';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Lrq's Blog';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!--
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
+</body>
+</html>
